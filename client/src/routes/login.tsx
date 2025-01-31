@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { Axios } from "../axios";
-import { AiFillGoogleCircle } from "react-icons/ai";
 
 const LoginPage = () => {
   const naivgate = useNavigate();

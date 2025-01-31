@@ -71,15 +71,17 @@ export default function ReviewsPage() {
             >
               <div className="flex justify-between">
                 {/* From */}
-                <div className="flex flex-row items-center gap-2 text-sm">
+                <div className="flex flex-row items-center gap-8 text-sm">
                   <div className="text-start">
                     <p className="font-light">{email.from}</p>
                   </div>
-                  <div className="bg-red-500 text-white rounded-lg px-2">
-                    <span>Check Necessity: High</span>
-                  </div>
-                  <div className="bg-red-500 text-white rounded-lg px-2">
-                    <span>Check Points: 3</span>
+                  <div className="flex flex-row items-center gap-2">
+                    <div className="bg-red-500 text-white rounded-xl px-3">
+                      <span>Check Necessity: High</span>
+                    </div>
+                    <div className="bg-red-500 text-white rounded-full px-1.5">
+                      <span>3</span>
+                    </div>
                   </div>
                 </div>
                 {/* Date */}

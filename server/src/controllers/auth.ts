@@ -31,6 +31,7 @@ export const googleCallback = async (req: Request, res: Response) => {
       res
         .status(400)
         .json({ message: "Google token is missing essential user data." });
+      return;
     }
 
     if (!payload.email) {
@@ -45,6 +46,7 @@ export const googleCallback = async (req: Request, res: Response) => {
           refreshToken: tokens.refresh_token,
         },
       });
+      return;
     }
 
     // if there is no user found in DB, lets create user

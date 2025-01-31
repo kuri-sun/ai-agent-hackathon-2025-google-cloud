@@ -2,8 +2,11 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 import { Link } from "react-router-dom";
 import geminiLogo from "../assets/gemini-logo.png";
+import { useAuth } from "../context/auth-provider";
 
 function Header({ className = "" }: { className?: string }) {
+  const { user } = useAuth();
+
   return (
     <div
       className={twMerge(
@@ -13,9 +16,10 @@ function Header({ className = "" }: { className?: string }) {
     >
       <div
         className={twMerge(
-          "relative text-lg flex flex-row gap-4 items-center justify-center sm:justify-between w-full rounded-lg bg-white text-black dark:text-white dark:bg-neutral-800 py-3 px-4"
+          "relative text-lg flex flex-row gap-4 items-center justify-center sm:justify-between w-full rounded-lg bg-white text-black dark:text-white dark:bg-neutral-800 h-[52px] px-4"
         )}
       >
+        {/* Company Logo */}
         <div
           className={twMerge(
             "hidden sm:flex flex-row items-center gap-4 transition-all duration-1000 "
@@ -32,6 +36,31 @@ function Header({ className = "" }: { className?: string }) {
             </div>
           </Link>
         </div>
+        {/* User Profile */}
+        {user ? (
+          <div className="relative flex flex-col gap-2">
+            <img
+              src={user.avatar ?? "/images/profile.png"}
+              alt="avatar"
+              width={48}
+              height={48}
+              className="h-10 w-10 rounded-full border"
+            />
+
+            {/* <div className="absolute right-0 top-10 bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-2 flex flex-col gap-2 border">
+              <div>
+                <button
+                  onClick={() => logOut()}
+                  className="text-red-600 font-semibold hover:bg-red-100 p-2 rounded-lg"
+                >
+                  Logout
+                </button>
+              </div>
+            </div> */}
+          </div>
+        ) : (
+          <div />
+        )}
       </div>
     </div>
   );
