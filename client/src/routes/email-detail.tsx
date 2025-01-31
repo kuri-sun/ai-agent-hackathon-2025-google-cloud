@@ -13,6 +13,9 @@ import { BiMessageDots } from "react-icons/bi";
 export default function EmailDetailPage() {
   const { emailId } = useParams();
   const navigate = useNavigate();
+
+  const emailViewRef = React.useRef<HTMLDivElement>(null);
+
   const [selectedEmail, setSelectedEmail] = React.useState<Email | null>(null);
   const [generatedTemplate, setGeneratedTemplate] =
     React.useState<Email | null>(null);
@@ -44,6 +47,14 @@ export default function EmailDetailPage() {
   const onClickReply = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
+    if (emailViewRef.current) {
+      emailViewRef.current.scrollIntoView({ behavior: "smooth" });
+      emailViewRef.current.scrollTo({
+        top: emailViewRef.current.scrollHeight,
+        behavior: "smooth", // Or 'auto' for instant scroll
+      });
+    }
+
     // TODO: Generate reply template
     setGeneratedTemplate({
       from: selectedEmail?.from || "",
@@ -74,7 +85,10 @@ export default function EmailDetailPage() {
       </div>
       {/* Selected Email */}
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col justify-between h-[calc(100vh-92px)] mt-[40px] overflow-y-auto">
+        <div
+          ref={emailViewRef}
+          className="flex flex-col justify-between h-[calc(100vh-92px)] mt-[40px] overflow-y-auto"
+        >
           {selectedEmail ? (
             <>
               <div className="bg-white py-4 px-6">

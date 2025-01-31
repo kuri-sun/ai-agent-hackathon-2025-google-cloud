@@ -31,7 +31,10 @@ export const getEmail = async (req: Request, res: Response) => {
   }
 };
 
-export const getResponseEmailTemplate = async (req: Request, res: Response) => {
+export const generateEmailReviewResult = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const { emailContent } = req.body;
 
@@ -77,6 +80,8 @@ export const getResponseEmailTemplate = async (req: Request, res: Response) => {
     const interpretation =
       result.response.candidates?.[0]?.content?.parts?.[0]?.text ??
       "No interpretation found";
+
+    // TODO: Create ReviewResult data in the DB.
 
     res.status(200).json({ data: { interpretation } });
   } catch (error) {

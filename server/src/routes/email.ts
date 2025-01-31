@@ -2,8 +2,8 @@ import express from "express";
 import {
   getEmails,
   getEmail,
-  getResponseEmailTemplate,
   replyEmail,
+  generateEmailReviewResult,
 } from "../controllers/email";
 
 const router = express.Router();
@@ -14,8 +14,8 @@ router.get("/", getEmails);
 // GET /emails/:emailId - Get email by emailId
 router.get("/:emailId", getEmail);
 
-// GET /emails/:emailId/template - Get post by postId
-router.post("/:emailId/template", getResponseEmailTemplate);
+// POST /emails/:emailId/template
+router.post("/:emailId/template", generateEmailReviewResult);
 
 // POST /emails/reply - Reply to an email
 router.post("/:emailId/reply", replyEmail);
