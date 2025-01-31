@@ -6,12 +6,11 @@ import { Email } from "../models/email";
 import { formatDate } from "../utils/format";
 import { twMerge } from "tailwind-merge";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineReload } from "react-icons/ai";
-import { BiRevision } from "react-icons/bi";
+// import { BiRevision } from "react-icons/bi";
 
 // import { useLocation } from "react-router-dom";
 
-export default function IndexPage() {
+export default function ReviewsPage() {
   const navigate = useNavigate();
   // const location = useLocation();
   // const queryParams = new URLSearchParams(location.search);
@@ -45,9 +44,9 @@ export default function IndexPage() {
     fetchEmails();
   }, []);
 
+  // Redirect to email detail page
   const onSelectEmail = (email: Email) => {
-    // TODO: redirect to email detail page
-    navigate(`/inbox/${email.id}`);
+    navigate(`/reviews/${email.id}`);
   };
 
   return (
@@ -60,7 +59,7 @@ export default function IndexPage() {
       </div>
       {/* Email List*/}
       <div className="flex flex-col">
-        <div className="flex flex-col gap-2 h-[calc(100vh-92px)] mt-[40px] p-2  overflow-y-auto">
+        <div className="flex flex-col gap-2 h-[calc(100vh-92px)] mt-[40px] p-2 overflow-y-auto">
           {emails.map((email, index) => (
             <button
               key={index}
@@ -72,8 +71,16 @@ export default function IndexPage() {
             >
               <div className="flex justify-between">
                 {/* From */}
-                <div className="text-start">
-                  <p className="text-sm font-light">{email.from}</p>
+                <div className="flex flex-row items-center gap-2 text-sm">
+                  <div className="text-start">
+                    <p className="font-light">{email.from}</p>
+                  </div>
+                  <div className="bg-red-500 text-white rounded-lg px-2">
+                    <span>Check Necessity: High</span>
+                  </div>
+                  <div className="bg-red-500 text-white rounded-lg px-2">
+                    <span>Check Points: 3</span>
+                  </div>
                 </div>
                 {/* Date */}
                 <p className="text-xs text-gray-500">
