@@ -1,4 +1,5 @@
 import { Credentials, OAuth2Client, TokenPayload } from "google-auth-library";
+import { oauthScope } from "../../utils/constants";
 
 export async function verifyGoogleToken(clientId: string) {
   const oAuth2Client = new OAuth2Client(
@@ -10,10 +11,8 @@ export async function verifyGoogleToken(clientId: string) {
   try {
     const authorizeUrl = oAuth2Client.generateAuthUrl({
       access_type: "offline",
-      scope: [
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "https://www.googleapis.com/auth/userinfo.email",
-      ],
+      prompt: "consent",
+      scope: oauthScope,
     });
 
     return authorizeUrl;

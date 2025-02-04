@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   callbackGoogle,
   verifyGoogleToken,
-} from "../services/google/google-auth";
+} from "../services/auth/google-auth";
 import { User } from "../models/user";
 
 export const googleLogin = async (req: Request, res: Response) => {

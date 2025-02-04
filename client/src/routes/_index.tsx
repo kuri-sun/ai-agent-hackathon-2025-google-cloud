@@ -6,8 +6,8 @@ import { Email } from "../models/email";
 import { formatDate } from "../utils/format";
 import { twMerge } from "tailwind-merge";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineReload } from "react-icons/ai";
-import { BiRevision } from "react-icons/bi";
+// import { AiOutlineReload } from "react-icons/ai";
+// import { BiRevision } from "react-icons/bi";
 
 // import { useLocation } from "react-router-dom";
 
@@ -46,7 +46,7 @@ export default function IndexPage() {
   }, []);
 
   const onSelectEmail = (email: Email) => {
-    // TODO: redirect to email detail page
+    // redirect to email detail page
     navigate(`/inbox/${email.id}`);
   };
 

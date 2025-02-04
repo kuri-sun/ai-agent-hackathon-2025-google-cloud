@@ -3,9 +3,10 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 // Routes
+import healthRoutes from "./src/routes/health";
 import authRoutes from "./src/routes/auth";
-import userRoutes from "./src/routes/user";
-import emailRoutes from "./src/routes/email";
+import userRoutes from "./src/routes/users";
+import emailRoutes from "./src/routes/emails";
 import bodyParser from "body-parser";
 import path from "path";
 import mongoose from "mongoose";
@@ -40,13 +41,21 @@ app.use(
 );
 
 // Register Routes
+app.use("/api/v1/health", healthRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/email", emailRoutes);
+app.use("/api/v1/emails", emailRoutes);
+
+// Serve the static files from the React app
+const STATIC_FILES = path.join(__dirname, "../", "build");
+app.use(express.static(STATIC_FILES));
+app.get("/*", (_req, res) => {
+  res.sendFile(path.join(STATIC_FILES, "index.html"));
+});
 
 // Start the server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  connectDB();
-  console.log(`Server running on port ${PORT}`);
+const PORT = process.env.SERVER_PORT || 8080;
+app.listen(PORT, async () => {
+  await connectDB();
+  console.log(`🌐️  Server running on port ${PORT} 🌐`);
 });

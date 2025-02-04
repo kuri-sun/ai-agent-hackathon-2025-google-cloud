@@ -4,7 +4,8 @@ declare namespace Express {
     user?: {
       userId?: string;
       email?: string;
-      name?: string;
+      accessToken?: string;
+      expiryDate?: number;
     };
   }
 }

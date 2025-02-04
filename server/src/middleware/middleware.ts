@@ -23,7 +23,6 @@ export const authorize = async (
 
     // Verify the token with Google's OAuth2 client
     const tokenInfo = await oAuth2Client.getTokenInfo(token);
-
     if (
       !tokenInfo.expiry_date ||
       tokenInfo.expiry_date < new Date().getTime()
@@ -36,6 +35,8 @@ export const authorize = async (
     req.user = {
       userId: tokenInfo.sub,
       email: tokenInfo.email,
+      accessToken: token,
+      expiryDate: tokenInfo.expiry_date,
     };
 
     next();
