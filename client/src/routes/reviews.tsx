@@ -9,13 +9,11 @@ import { BiRevision } from "react-icons/bi";
 
 export default function ReviewsPage() {
   const navigate = useNavigate();
-  const { isDraftsLoaded, loading, drafts, refreshDrafts } = useEmail();
+  const { loading, drafts, refreshDrafts } = useEmail();
 
   // Fetch a list of drafts
   useEffect(() => {
-    if (!isDraftsLoaded) {
-      refreshDrafts();
-    }
+    refreshDrafts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
