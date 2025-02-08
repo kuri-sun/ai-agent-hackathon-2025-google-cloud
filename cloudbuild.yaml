@@ -33,14 +33,14 @@ steps:
       [
         "build",
         "-t",
-        "$_GCR_HOSTNAME/$_PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA",
+        "$_GCR_HOSTNAME/$_PROJECT_ID/$_ARTIFACT_REGISTRY_NAME/$_CLOUD_RUN_NAME:$COMMIT_SHA",
         ".",
       ]
     dir: "server"
 
   # Push the Docker image to Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "$_GCR_HOSTNAME/$_PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA"]
+    args: ["push", "$_GCR_HOSTNAME/$_PROJECT_ID/$_ARTIFACT_REGISTRY_NAM/$_CLOUD_RUN_NAME:$COMMIT_SHA"]
     dir: "server"
 
   # Deploy to Cloud Run
@@ -49,9 +49,9 @@ steps:
     args:
       - "run"
       - "deploy"
-      - "$_SERVICE_NAME"
+      - "$_CLOUD_RUN_NAME"
       - "--image"
-      - "$_GCR_HOSTNAME/$_PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA"
+      - "$_GCR_HOSTNAME/$_PROJECT_ID/$_ARTIFACT_REGISTRY_NAM/$_CLOUD_RUN_NAME:$COMMIT_SHA"
       - "--region"
       - "$_REGION"
       - "--platform=managed"
@@ -78,7 +78,8 @@ options:
 substitutions:
   _GCR_HOSTNAME: "asia-northeast1-docker.pkg.dev"
   _PROJECT_ID: "${_GOOGLE_CLOUD_PROJECT_ID}"
-  _SERVICE_NAME: "${_CLOUD_RUN_NAME}"
+  _ARTIFACT_REGISTRY_NAME: "${_ARTIFACT_REGISTRY_NAME}"
+  _CLOUD_RUN_NAME: "${_CLOUD_RUN_NAME}"
   _REGION: "${_CLOUD_RUN_REGION}"
   _GOOGLE_OIDC_CLIENT_SECRET: "${_GOOGLE_OIDC_CLIENT_SECRET}"
   _GOOGLE_OIDC_CALLBACK_URL: "${_GOOGLE_OIDC_CALLBACK_URL}"
