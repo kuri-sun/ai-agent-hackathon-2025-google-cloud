@@ -8,6 +8,7 @@ import EmailReviewResults from "../components/email-review-results";
 import EmailDetailCard from "../components/email-detail-card";
 import { Axios } from "../axios";
 import EmailDetailCardSkelton from "../components/email-detail-card-skelton";
+import { t } from "i18next";
 
 export default function ReviewDetailPage() {
   const navigate = useNavigate();
@@ -169,7 +170,7 @@ export default function ReviewDetailPage() {
           className="bg-blue-500 inline-flex flex-row text-white text-sm items-center gap-2 py-1 px-3 rounded"
           onClick={(e) => onReReview(e)}
         >
-          <span>Re-review</span>
+          <span>{t("Re-review")}</span>
           <BiMessageDots size={16} />
         </button>
       </div>
@@ -200,7 +201,7 @@ export default function ReviewDetailPage() {
                     onSubjectChange={onSubjectChange}
                     onTextChange={onTextChange}
                     isClose={false}
-                    primaryButtonText="Send"
+                    primaryButtonText={t("Send")}
                     onClickPrimaryButton={onSendDraft}
                   />
                 )}

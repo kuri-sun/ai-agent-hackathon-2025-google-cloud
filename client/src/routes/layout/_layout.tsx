@@ -4,8 +4,10 @@ import Header from "../../components/header";
 import { AiOutlineInbox } from "react-icons/ai";
 import { useAuth } from "../../context/auth-provider";
 import { BiMessageDots } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
 
 const Layout = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -22,11 +24,11 @@ const Layout = () => {
 
   const tabs = [
     {
-      name: "My Email",
+      name: t("My Email"),
       subtabs: [
-        { name: "Inbox", path: "/", icon: <AiOutlineInbox size={24} /> },
+        { name: t("Inbox"), path: "/", icon: <AiOutlineInbox size={24} /> },
         {
-          name: "ReviewBox",
+          name: t("ReviewBox"),
           path: "/reviews",
           icon: <BiMessageDots size={24} />,
         },

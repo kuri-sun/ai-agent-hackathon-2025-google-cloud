@@ -1,12 +1,20 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
+import "../i18/config";
 import { Link } from "react-router-dom";
 import geminiLogo from "../assets/gemini-logo.png";
 import { useAuth } from "../context/auth-provider";
 import Dropdown from "./dropdown";
+import i18n from "i18next";
 
 function Header({ className = "" }: { className?: string }) {
   const { user, logOut } = useAuth();
+
+  const onToggleLanguageClick = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLang = e.target.value;
+    i18n.changeLanguage(newLang);
+    document.documentElement.lang = newLang;
+  };
 
   const dropdownItems = [
     {
@@ -50,7 +58,15 @@ function Header({ className = "" }: { className?: string }) {
         </div>
         {/* User Profile */}
         {user ? (
-          <div className="relative flex flex-col gap-2">
+          <div className="relative flex flex-row gap-6">
+            <select
+              className="p-2 rounded-lg border"
+              name="language select"
+              onChange={onToggleLanguageClick}
+            >
+              <option value="ja">日本語</option>
+              <option value="en">English</option>
+            </select>
             <Dropdown items={dropdownItems}>
               <img
                 src={user.avatar ?? "/images/profile.png"}

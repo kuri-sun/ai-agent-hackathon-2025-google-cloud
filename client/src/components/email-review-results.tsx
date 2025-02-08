@@ -3,6 +3,7 @@ import { BiMessageDots } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import React from "react";
 import { ReviewResult } from "../models/review-result";
+import { t } from "i18next";
 
 export default function EmailReviewResults({
   reviewResult,
@@ -18,7 +19,7 @@ export default function EmailReviewResults({
     >
       <div className="w-full flex flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-2 font-light">
-          <span>Reviews from Co-Email</span>
+          <span>{t("Reviews from Co-Email")}</span>
           <BiMessageDots size={18} />
         </div>
         {/* <div onClick={onClickCodeReviewBox}>
