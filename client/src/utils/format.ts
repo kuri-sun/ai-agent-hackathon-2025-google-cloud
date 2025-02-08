@@ -1,8 +1,12 @@
 import { marked } from "marked";
 import DOMPurify from "dompurify";
+import i18n from "../i18/config";
+import dayjs from "dayjs";
 
 export const formatDate = (date: string) => {
-  return new Date(date).toLocaleString();
+  const dateFormat =
+    i18n.language === "ja" ? "YYYY年MM月DD日 HH:mm" : "MM/DD/YYYY HH:mm";
+  return dayjs(date).format(dateFormat);
 };
 
 export const delay = () => new Promise((resolve) => setTimeout(resolve, 3000));

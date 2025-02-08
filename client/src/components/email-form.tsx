@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import React from "react";
 import { FiX } from "react-icons/fi";
 
@@ -50,7 +51,7 @@ export default function EmailForm({
         <div className="flex flex-row gap-4 justify-between">
           <input
             type="text"
-            placeholder="Subject"
+            placeholder={t("Email subject")}
             className="flex grow py-1 px-2 border"
             defaultValue={replyEmailForm.subject}
             onChange={onSubjectChange}
@@ -65,7 +66,7 @@ export default function EmailForm({
           )}
         </div>
         <textarea
-          placeholder="Message"
+          placeholder={t("Your message here")}
           className="py-1 px-2 h-40 focus:outline-none"
           autoFocus
           defaultValue={replyEmailForm.text}

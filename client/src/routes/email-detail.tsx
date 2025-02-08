@@ -6,6 +6,7 @@ import EmailForm from "../components/email-form";
 import EmailDetailCard from "../components/email-detail-card";
 import { Axios } from "../axios";
 import EmailDetailCardSkelton from "../components/email-detail-card-skelton";
+import { t } from "i18next";
 
 export default function EmailDetailPage() {
   const navigate = useNavigate();
@@ -146,8 +147,8 @@ export default function EmailDetailPage() {
                   replyEmailForm={replyEmailForm}
                   onSubjectChange={onSubjectChange}
                   onTextChange={onTextChange}
-                  primaryButtonText="Review Email"
-                  secondaryButtonText="Send Email"
+                  primaryButtonText={t("Review this Email")}
+                  secondaryButtonText={t("Send")}
                   onClickPrimaryButton={onSubmitReview}
                   onClickSecondaryButton={onSendEmail}
                 />
