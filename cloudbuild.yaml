@@ -40,7 +40,11 @@ steps:
 
   # Push the Docker image to Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "$_GCR_HOSTNAME/$_PROJECT_ID/$_ARTIFACT_REGISTRY_NAM/$_CLOUD_RUN_NAME:$COMMIT_SHA"]
+    args:
+      [
+        "push",
+        "$_GCR_HOSTNAME/$_PROJECT_ID/$_ARTIFACT_REGISTRY_NAM/$_CLOUD_RUN_NAME:$COMMIT_SHA",
+      ]
     dir: "server"
 
   # Deploy to Cloud Run
@@ -86,4 +90,3 @@ substitutions:
   _SERVER_PORT: "8080"
   _MONGODB_URI: "${_MONGODB_URI}"
 # Secrets are best handled through Cloud Build Triggers, not directly in cloudbuild.yaml
-# See instructions below on how to set secrets in Cloud Build triggers.
