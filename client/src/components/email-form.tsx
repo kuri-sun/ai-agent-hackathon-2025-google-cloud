@@ -64,7 +64,7 @@ export default function EmailForm({
           {isClose && (
             <button
               onClick={onClose}
-              className="hover:bg-black/60 p-2 rounded-lg"
+              className="hover:bg-gray-100 dark:hover:bg-black/60 p-2 rounded-lg"
             >
               <FiX />
             </button>

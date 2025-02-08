@@ -38,7 +38,7 @@ export default function EmailDetailCard({
         {onClickReply && (
           <button
             title="Reply"
-            className="hover:bg-black/60 p-2 rounded-lg"
+            className="hover:bg-gray-100 dark:hover:bg-black/60 p-2 rounded-lg"
             onClick={onClickReply}
           >
             <BsReply size={24} />

@@ -181,7 +181,7 @@ export default function ReviewDetailPage() {
         {/* Header  */}
         <div className="fixed h-[40px] w-5/6 flex flex-row items-center justify-between px-4 border-b">
           <button
-            className="hover:bg-gray-100 dark:hover:bg-black/60 p-2 rounded-lg"
+            className="hover:bg-gray-100 dark:hover:bg-gray-100 dark:hover:bg-black/60 p-2 rounded-lg"
             onClick={onClickGoBack}
           >
             <AiOutlineArrowLeft />

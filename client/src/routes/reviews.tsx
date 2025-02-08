@@ -48,7 +48,7 @@ export default function ReviewsPage() {
       {/* Header */}
       <div className="fixed h-[40px] w-full flex flex-row items-center justify-start px-4 border-b">
         <button
-          className="hover:bg-black/60 p-2 rounded-lg"
+          className="hover:bg-gray-100 dark:hover:bg-black/60 p-2 rounded-lg"
           onClick={refreshDrafts}
         >
           <BiRevision size={20} />
