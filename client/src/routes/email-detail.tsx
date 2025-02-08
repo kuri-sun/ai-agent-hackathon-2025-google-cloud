@@ -6,15 +6,18 @@ import EmailForm from "../components/email-form";
 import EmailDetailCard from "../components/email-detail-card";
 import { Axios } from "../axios";
 import EmailDetailCardSkelton from "../components/email-detail-card-skelton";
-import { t } from "i18next";
+import { BeatLoader } from "../components/beat-loader";
+import { useTranslation } from "react-i18next";
 
 export default function EmailDetailPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { emailId } = useParams();
 
   const emailViewRef = React.useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [processingEmail, setProcessingEmail] = React.useState<boolean>(false);
   const [selectedEmail, setSelectedEmail] = React.useState<Email | null>(null);
   const [replyEmailForm, setReplyEmailForm] =
     React.useState<EmailPayload | null>(null);
@@ -72,6 +75,7 @@ export default function EmailDetailPage() {
       });
     }
   };
+
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (replyEmailForm) {
       setReplyEmailForm({
@@ -81,18 +85,26 @@ export default function EmailDetailPage() {
     }
   };
 
+  const onClickGoBack = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    navigate(-1);
+  };
+
   const onSubmitReview = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
 
     try {
+      setProcessingEmail(true);
       await Axios.post<ApiResponse<{ id: string; threadId: string }>>(
         `/emails/drafts`,
         { ...replyEmailForm }
       );
-      alert("Email was Reviewed!");
 
+      setProcessingEmail(false);
       navigate(`/reviews`);
     } catch (err) {
       console.error(err);
@@ -105,12 +117,13 @@ export default function EmailDetailPage() {
     e.preventDefault();
 
     try {
+      setProcessingEmail(true);
       await Axios.post<ApiResponse<{ id: string; threadId: string }>>(
         `/emails/send`,
         { ...replyEmailForm }
       );
-      alert("Email sent!");
 
+      setProcessingEmail(false);
       navigate(`/`);
     } catch (err) {
       console.error(err);
@@ -118,47 +131,50 @@ export default function EmailDetailPage() {
   };
 
   return (
-    <div className="flex flex-col w-5/6 ml-auto">
-      {/* Header  */}
-      <div className="fixed h-[40px] w-full bg-gray-50 flex flex-row items-center justify-start px-4 border-b">
-        <button
-          className="hover:bg-gray-100 p-2 rounded-lg"
-          onClick={() => navigate("/")}
-        >
-          <AiOutlineArrowLeft />
-        </button>
-      </div>
-      {/* Selected Email */}
-      <div className="flex flex-col gap-4">
-        <div
-          ref={emailViewRef}
-          className="flex flex-col justify-between h-[calc(100vh-92px)] mt-[40px] overflow-y-auto"
-        >
-          {!loading ? (
-            <>
-              {selectedEmail && (
-                <EmailDetailCard
-                  email={selectedEmail}
-                  onClickReply={onClickReply}
-                />
-              )}
-              {replyEmailForm && (
-                <EmailForm
-                  replyEmailForm={replyEmailForm}
-                  onSubjectChange={onSubjectChange}
-                  onTextChange={onTextChange}
-                  primaryButtonText={t("Review this Email")}
-                  secondaryButtonText={t("Send")}
-                  onClickPrimaryButton={onSubmitReview}
-                  onClickSecondaryButton={onSendEmail}
-                />
-              )}
-            </>
-          ) : (
-            <EmailDetailCardSkelton itemNumber={1} />
-          )}
+    <>
+      {processingEmail ? <BeatLoader text={t("Processing...")} /> : null}
+      <div className="flex flex-col w-5/6 ml-auto">
+        {/* Header  */}
+        <div className="fixed h-[40px] w-full bg-gray-50 flex flex-row items-center justify-start px-4 border-b">
+          <button
+            className="hover:bg-gray-100 p-2 rounded-lg"
+            onClick={onClickGoBack}
+          >
+            <AiOutlineArrowLeft />
+          </button>
+        </div>
+        {/* Selected Email */}
+        <div className="flex flex-col gap-4">
+          <div
+            ref={emailViewRef}
+            className="flex flex-col justify-between h-[calc(100vh-92px)] mt-[40px] overflow-y-auto"
+          >
+            {!loading ? (
+              <>
+                {selectedEmail && (
+                  <EmailDetailCard
+                    email={selectedEmail}
+                    onClickReply={onClickReply}
+                  />
+                )}
+                {replyEmailForm && (
+                  <EmailForm
+                    replyEmailForm={replyEmailForm}
+                    onSubjectChange={onSubjectChange}
+                    onTextChange={onTextChange}
+                    primaryButtonText={t("Review this Email")}
+                    secondaryButtonText={t("Send")}
+                    onClickPrimaryButton={onSubmitReview}
+                    onClickSecondaryButton={onSendEmail}
+                  />
+                )}
+              </>
+            ) : (
+              <EmailDetailCardSkelton itemNumber={1} />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

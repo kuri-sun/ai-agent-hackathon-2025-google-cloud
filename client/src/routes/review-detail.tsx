@@ -8,15 +8,20 @@ import EmailReviewResults from "../components/email-review-results";
 import EmailDetailCard from "../components/email-detail-card";
 import { Axios } from "../axios";
 import EmailDetailCardSkelton from "../components/email-detail-card-skelton";
-import { t } from "i18next";
+import { BeatLoader } from "../components/beat-loader";
+import { delay } from "../utils/format";
+import { useTranslation } from "react-i18next";
 
 export default function ReviewDetailPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { draftId } = useParams();
 
   const emailViewRef = React.useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [processingReview, setProcessingReview] =
+    React.useState<boolean>(false);
   const [selectedDraft, setSelectedDraft] = React.useState<DraftEmail | null>(
     null
   );
@@ -98,6 +103,7 @@ export default function ReviewDetailPage() {
       });
     }
   };
+
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (replyEmailForm) {
       setReplyEmailForm({
@@ -107,6 +113,13 @@ export default function ReviewDetailPage() {
     }
   };
 
+  const onClickGoBack = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    navigate(-1);
+  };
+
   // Update a draft
   const onReReview = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -114,6 +127,7 @@ export default function ReviewDetailPage() {
     e.preventDefault();
 
     try {
+      setProcessingReview(true);
       const updated = await Axios.put<ApiResponse<DraftEmail>>(
         `/emails/drafts/${draftId}`,
         {
@@ -128,6 +142,7 @@ export default function ReviewDetailPage() {
           reviewResult: updated.data.data.reviewResult,
         });
       }
+      setProcessingReview(false);
     } catch (err) {
       console.error(err);
     }
@@ -143,6 +158,8 @@ export default function ReviewDetailPage() {
         console.error("No selected draft");
         return;
       }
+
+      setProcessingReview(true);
       await Axios.post<ApiResponse<{ id: string; message: any }>>(
         `/emails/drafts/${draftId}/send`,
         {
@@ -150,6 +167,7 @@ export default function ReviewDetailPage() {
         }
       );
 
+      setProcessingReview(false);
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -157,61 +175,64 @@ export default function ReviewDetailPage() {
   };
 
   return (
-    <div className="flex flex-col w-5/6 ml-auto">
-      {/* Header  */}
-      <div className="fixed h-[40px] w-5/6 bg-gray-50 flex flex-row items-center justify-between px-4 border-b">
-        <button
-          className="hover:bg-gray-100 p-2 rounded-lg"
-          onClick={() => navigate(-1)}
-        >
-          <AiOutlineArrowLeft />
-        </button>
-        <button
-          className="bg-blue-500 inline-flex flex-row text-white text-sm items-center gap-2 py-1 px-3 rounded"
-          onClick={(e) => onReReview(e)}
-        >
-          <span>{t("Re-review")}</span>
-          <BiMessageDots size={16} />
-        </button>
-      </div>
+    <>
+      {processingReview ? <BeatLoader text={t("Processing...")} /> : null}
+      <div className="flex flex-col w-5/6 ml-auto">
+        {/* Header  */}
+        <div className="fixed h-[40px] w-5/6 bg-gray-50 flex flex-row items-center justify-between px-4 border-b">
+          <button
+            className="hover:bg-gray-100 p-2 rounded-lg"
+            onClick={onClickGoBack}
+          >
+            <AiOutlineArrowLeft />
+          </button>
+          <button
+            className="bg-blue-500 inline-flex flex-row text-white text-sm items-center gap-2 py-1 px-3 rounded"
+            onClick={onReReview}
+          >
+            <span>{t("Re-review")}</span>
+            <BiMessageDots size={16} />
+          </button>
+        </div>
 
-      <div className="flex flex-col gap-4">
-        <div
-          ref={emailViewRef}
-          className="flex flex-col justify-between h-[calc(100vh-92px)] mt-[40px] overflow-y-auto"
-        >
-          {/* Email View */}
-          {!loading ? (
-            <>
-              {/* Thread of emails? */}
-              {threadEmails.map((email) => (
-                <EmailDetailCard key={email.id} email={email} />
-              ))}
-              <div>
-                {/* Review Result */}
-                {selectedDraft?.reviewResult && (
-                  <EmailReviewResults
-                    reviewResult={selectedDraft.reviewResult}
-                  />
-                )}
-                {/* Reply Draft */}
-                {replyEmailForm && (
-                  <EmailForm
-                    replyEmailForm={replyEmailForm}
-                    onSubjectChange={onSubjectChange}
-                    onTextChange={onTextChange}
-                    isClose={false}
-                    primaryButtonText={t("Send")}
-                    onClickPrimaryButton={onSendDraft}
-                  />
-                )}
-              </div>
-            </>
-          ) : (
-            <EmailDetailCardSkelton />
-          )}
+        {/* Selected Draft */}
+        <div className="flex flex-col gap-4">
+          <div
+            ref={emailViewRef}
+            className="flex flex-col justify-between h-[calc(100vh-92px)] mt-[40px] overflow-y-auto"
+          >
+            {!loading ? (
+              <>
+                {/* Thread of emails? */}
+                {threadEmails.map((email) => (
+                  <EmailDetailCard key={email.id} email={email} />
+                ))}
+                <div>
+                  {/* Review Result */}
+                  {selectedDraft?.reviewResult && (
+                    <EmailReviewResults
+                      reviewResult={selectedDraft.reviewResult}
+                    />
+                  )}
+                  {/* Reply Draft */}
+                  {replyEmailForm && (
+                    <EmailForm
+                      replyEmailForm={replyEmailForm}
+                      onSubjectChange={onSubjectChange}
+                      onTextChange={onTextChange}
+                      isClose={false}
+                      primaryButtonText={t("Send")}
+                      onClickPrimaryButton={onSendDraft}
+                    />
+                  )}
+                </div>
+              </>
+            ) : (
+              <EmailDetailCardSkelton itemNumber={1} />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
