@@ -4,12 +4,37 @@ import { useNavigate } from "react-router-dom";
 import EmailListSkelton from "../components/email-list-skelton";
 import EmailCard from "../components/email-card";
 import { twMerge } from "tailwind-merge";
-import { useEmail } from "../context/email-provider";
 import { BiRevision } from "react-icons/bi";
+import { Axios } from "../axios";
 
 export default function IndexPage() {
   const navigate = useNavigate();
-  const { loading, emails, refreshEmails } = useEmail();
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [emails, setEmails] = React.useState<Email[]>([]);
+
+  const refreshEmails = async () => {
+    try {
+      setLoading(true);
+      const res = await Axios.get<
+        ApiResponse<{
+          messages: Email[];
+        }>
+      >("/emails", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "x-refresh-token": localStorage.getItem("refreshToken"),
+        },
+      });
+      setEmails(res.data.data.messages);
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onSelectEmail = (email: Email) => {
+    navigate(`/inbox/${email.id}`);
+  };
 
   // Fetch a list of emails
   useEffect(() => {
@@ -17,17 +42,13 @@ export default function IndexPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSelectEmail = (email: Email) => {
-    navigate(`/inbox/${email.id}`);
-  };
-
   return (
     <div className="flex flex-col w-5/6 ml-auto">
       {/* Header */}
       <div className="fixed h-[40px] w-full bg-gray-50 flex flex-row items-center justify-start px-4 border-b">
         <button
           className="hover:bg-gray-100 p-2 rounded-lg"
-          onClick={() => refreshEmails(true)}
+          onClick={refreshEmails}
         >
           <BiRevision size={20} />
         </button>
@@ -48,7 +69,6 @@ export default function IndexPage() {
               >
                 <EmailCard
                   from={email.from.text}
-                  to={email.to.text}
                   date={email.date}
                   subject={email.subject}
                   text={email.text}

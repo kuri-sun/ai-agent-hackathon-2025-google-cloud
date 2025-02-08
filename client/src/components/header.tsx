@@ -1,19 +1,16 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
-import "../i18/config";
 import { Link } from "react-router-dom";
 import geminiLogo from "../assets/gemini-logo.png";
 import { useAuth } from "../context/auth-provider";
 import Dropdown from "./dropdown";
-import i18n from "i18next";
+import { setUILanguage } from "../utils/i18n";
 
 function Header({ className = "" }: { className?: string }) {
   const { user, logOut } = useAuth();
 
   const onToggleLanguageClick = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLang = e.target.value;
-    i18n.changeLanguage(newLang);
-    document.documentElement.lang = newLang;
+    setUILanguage(e.target.value);
   };
 
   const dropdownItems = [
@@ -63,6 +60,7 @@ function Header({ className = "" }: { className?: string }) {
               className="p-2 rounded-lg border"
               name="language select"
               onChange={onToggleLanguageClick}
+              defaultValue={document.documentElement.lang}
             >
               <option value="ja">日本語</option>
               <option value="en">English</option>

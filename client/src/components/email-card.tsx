@@ -1,18 +1,19 @@
+import React from "react";
 import { formatDate } from "../utils/format";
+import { useTranslation } from "react-i18next";
 
 export default function EmailCard({
   from,
-  to,
   date,
   subject,
   text,
 }: {
   from: string;
-  to: string;
   date: string;
   subject: string;
   text: string;
 }) {
+  const { t } = useTranslation();
   return (
     <>
       <div className="flex justify-between">
@@ -21,7 +22,7 @@ export default function EmailCard({
           <p className="text-sm font-light">{from}</p>
         </div>
         {/* Date */}
-        <p className="text-xs text-gray-500">{formatDate(date)}</p>
+        <p className="text-xs text-gray-500">{t(formatDate(date))}</p>
       </div>
       {/* Subject */}
       <h3 className="text-sm text-start font-semibold mt-2">{subject}</h3>

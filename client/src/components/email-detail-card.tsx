@@ -1,5 +1,6 @@
 import { BsReply } from "react-icons/bs";
 import { formatDate } from "../utils/format";
+import { useTranslation } from "react-i18next";
 
 export default function EmailDetailCard({
   email,
@@ -17,6 +18,8 @@ export default function EmailDetailCard({
   };
   onClickReply?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white py-4 px-6 m-4 border shadow-md rounded-lg">
       <h3 className="text-2xl font-semibold py-4">{email.subject}</h3>
@@ -27,7 +30,7 @@ export default function EmailDetailCard({
           <div className="w-8 h-8 rounded-full bg-gray-300 mr-2"></div>
           <div>
             <p className="text-sm font-semibold">{email.from.text}</p>
-            <p className="text-xs text-gray-500">{formatDate(email.date)}</p>
+            <p className="text-xs text-gray-500">{t(formatDate(email.date))}</p>
           </div>
         </div>
         {onClickReply && (
@@ -41,7 +44,7 @@ export default function EmailDetailCard({
         )}
       </div>
 
-      <div dangerouslySetInnerHTML={{ __html: email.textAsHtml }}></div>
+      <div dangerouslySetInnerHTML={{ __html: email.html }}></div>
     </div>
   );
 }

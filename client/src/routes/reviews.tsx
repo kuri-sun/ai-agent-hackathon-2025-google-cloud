@@ -4,12 +4,34 @@ import { twMerge } from "tailwind-merge";
 import { useNavigate } from "react-router-dom";
 import EmailListSkelton from "../components/email-list-skelton";
 import EmailCard from "../components/email-card";
-import { useEmail } from "../context/email-provider";
 import { BiRevision } from "react-icons/bi";
+import { Axios } from "../axios";
 
 export default function ReviewsPage() {
   const navigate = useNavigate();
-  const { loading, drafts, refreshDrafts } = useEmail();
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [drafts, setDrafts] = React.useState<DraftEmail[]>([]);
+
+  const refreshDrafts = async () => {
+    try {
+      setLoading(true);
+      const res = await Axios.get<
+        ApiResponse<{
+          drafts: DraftEmail[];
+        }>
+      >("/emails/drafts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "x-refresh-token": localStorage.getItem("refreshToken"),
+        },
+      });
+
+      setDrafts(res.data.data.drafts);
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // Fetch a list of drafts
   useEffect(() => {
@@ -27,7 +49,7 @@ export default function ReviewsPage() {
       <div className="fixed h-[40px] w-full bg-gray-50 flex flex-row items-center justify-start px-4 border-b">
         <button
           className="hover:bg-gray-100 p-2 rounded-lg"
-          onClick={() => refreshDrafts(true)}
+          onClick={refreshDrafts}
         >
           <BiRevision size={20} />
         </button>
@@ -48,7 +70,6 @@ export default function ReviewsPage() {
               >
                 <EmailCard
                   from={draft.from.text}
-                  to={draft.to.text}
                   date={draft.date}
                   subject={draft.subject}
                   text={draft.text}
