@@ -14,6 +14,15 @@ import { setUILanguage } from "./utils/i18n";
 
 function App() {
   React.useEffect(() => {
+    // dark/light
+    const html = document.querySelector("html");
+    if (html) {
+      const isDark = localStorage.getItem("dark");
+      if (isDark) {
+        html.classList.add("dark");
+      }
+    }
+    // Language setting
     const lang = localStorage.getItem("lang");
     setUILanguage(lang);
   }, []);

@@ -201,9 +201,9 @@ export default function ReviewDetailPage() {
       {processingReview ? <BeatLoader text={t("Processing...")} /> : null}
       <div className="flex flex-col w-5/6 ml-auto">
         {/* Header  */}
-        <div className="fixed h-[40px] w-5/6 bg-gray-50 flex flex-row items-center justify-between px-4 border-b">
+        <div className="fixed h-[40px] w-5/6 flex flex-row items-center justify-between px-4 border-b">
           <button
-            className="hover:bg-gray-100 p-2 rounded-lg"
+            className="hover:bg-gray-100 dark:hover:bg-gray-100 dark:hover:bg-black/60 p-2 rounded-lg"
             onClick={onClickGoBack}
           >
             <AiOutlineArrowLeft />
