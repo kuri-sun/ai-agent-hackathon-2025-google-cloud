@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import {
   createDraft,
+  getDraft,
   getDrafts,
   getMessage,
   getMessages,
+  getThread,
+  getThreads,
   sendDraft,
   sendMessage,
   updateDraft,
@@ -56,7 +59,7 @@ export const getEmail = async (req: Request, res: Response) => {
         refreshToken,
         expiryDate,
       },
-      req.params.id
+      req.params.emailId
     );
 
     res.status(200).json({ success: true, data });
@@ -117,6 +120,31 @@ export const getReviewedDraftEmails = async (req: Request, res: Response) => {
 };
 
 /**
+ *  Get a draft email
+ */
+export const getDraftEmail = async (req: Request, res: Response) => {
+  try {
+    const { clientId, accessToken, refreshToken, expiryDate } =
+      extractAuthInfo(req);
+
+    const data = await getDraft(
+      {
+        clientId,
+        accessToken,
+        refreshToken,
+        expiryDate,
+      },
+      req.params.draftId
+    );
+
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.error("error", error);
+    res.status(500).json({ success: false, message: error });
+  }
+};
+
+/**
  * Create a draft email
  */
 export const createDraftEmail = async (req: Request, res: Response) => {
@@ -142,7 +170,7 @@ export const createDraftEmail = async (req: Request, res: Response) => {
 };
 
 /**
- * Create a draft email
+ * Update a draft email
  */
 export const updateDraftEmail = async (req: Request, res: Response) => {
   try {
@@ -183,6 +211,53 @@ export const sendDraftEmail = async (req: Request, res: Response) => {
         expiryDate,
       },
       req.params.draftId
+    );
+
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.error("error", error);
+    res.status(500).json({ success: false, message: error });
+  }
+};
+
+/**
+ *  Get a list of email threads
+ */
+export const getEmailThreads = async (req: Request, res: Response) => {
+  try {
+    const { clientId, accessToken, refreshToken, expiryDate } =
+      extractAuthInfo(req);
+
+    const data = await getThreads({
+      clientId,
+      accessToken,
+      refreshToken,
+      expiryDate,
+    });
+
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.error("error", error);
+    res.status(500).json({ success: false, message: error });
+  }
+};
+
+/**
+ * Get a email thread
+ */
+export const getEmailThread = async (req: Request, res: Response) => {
+  try {
+    const { clientId, accessToken, refreshToken, expiryDate } =
+      extractAuthInfo(req);
+
+    const data = await getThread(
+      {
+        clientId,
+        accessToken,
+        refreshToken,
+        expiryDate,
+      },
+      req.params.threadId
     );
 
     res.status(200).json({ success: true, data });

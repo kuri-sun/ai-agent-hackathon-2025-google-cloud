@@ -32,9 +32,9 @@ const GoogleCallbackPage = () => {
       }
     };
 
-    redirect();
+    if (code) redirect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [code]);
 
   return <div>Redirecting...</div>;
 };

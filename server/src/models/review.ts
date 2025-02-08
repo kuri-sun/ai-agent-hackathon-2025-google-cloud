@@ -64,11 +64,21 @@ export const ReviewResult = {
     draftId: string;
     reviews: Review[];
   }): Promise<ReviewResult | null> => {
-    return _ReviewResult.findOneAndUpdate(
-      { draftId },
-      { reviews },
-      { new: true }
-    );
+    if (!draftId) {
+      let id = new mongoose.Types.ObjectId();
+      const data = await _ReviewResult.create({
+        _id: id,
+        draftId,
+        reviews,
+      });
+      return data;
+    } else {
+      return _ReviewResult.findOneAndUpdate(
+        { draftId },
+        { reviews },
+        { new: true }
+      );
+    }
   },
   // delete: async ({ id }: { id: string }): Promise<ReviewResult | null> => {
   //   return _User.findByIdAndDelete(id);

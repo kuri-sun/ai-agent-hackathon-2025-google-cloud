@@ -7,5 +7,6 @@ export const Axios = axios.create({
     Accept: "*/*",
     Authorization: "Bearer " + localStorage.getItem("token"),
     "x-client-id": GOOGLE_OAUTH_CLIENT_ID,
+    "x-refresh-token": localStorage.getItem("refreshToken"),
   },
 });

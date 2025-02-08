@@ -9,24 +9,30 @@ import EmailDetailPage from "./routes/email-detail";
 import ReviewsPage from "./routes/reviews";
 import ReviewDetailPage from "./routes/review-detail";
 import AuthProvider from "./context/auth-provider";
+import EmailProvider from "./context/email-provider";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/google/callback" element={<GoogleCallbackPage />} />
-            <Route path="/" element={<Layout />}>
-              <Route index element={<IndexPage />} />
-              <Route path="/inbox/:emailId" element={<EmailDetailPage />} />
-              <Route path="/reviews" element={<ReviewsPage />} />
-              <Route path="/reviews/:emailId" element={<ReviewDetailPage />} />
-              {/* <Route path="/reviews/:reviewId" element={<ReviewDetailPage />} /> */}
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
-          </Routes>
+          <EmailProvider>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/google/callback" element={<GoogleCallbackPage />} />
+              <Route path="/" element={<Layout />}>
+                <Route index element={<IndexPage />} />
+                <Route path="/inbox/:emailId" element={<EmailDetailPage />} />
+                <Route path="/reviews" element={<ReviewsPage />} />
+                <Route
+                  path="/reviews/:draftId"
+                  element={<ReviewDetailPage />}
+                />
+                {/* <Route path="/reviews/:reviewId" element={<ReviewDetailPage />} /> */}
+                <Route path="*" element={<NotFoundPage />} />
+              </Route>
+            </Routes>
+          </EmailProvider>
         </AuthProvider>
       </BrowserRouter>
     </>

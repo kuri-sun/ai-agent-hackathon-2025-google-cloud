@@ -1,52 +1,59 @@
-import { mockEmails } from "../mock/data";
-import React, { useEffect } from "react";
-import { marked } from "marked";
-import DOMPurify from "dompurify";
-import { Email } from "../models/email";
-import { formatDate } from "../utils/format";
-import { BsReply, BsSend } from "react-icons/bs";
-import { FiX } from "react-icons/fi";
+import React from "react";
+import { Email, EmailPayload } from "../models/email";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { BiMessageDots } from "react-icons/bi";
+import EmailForm from "../components/email-form";
+import EmailDetailCard from "../components/email-detail-card";
+import { Axios } from "../axios";
+import EmailDetailCardSkelton from "../components/email-detail-card-skelton";
 
 export default function EmailDetailPage() {
-  const { emailId } = useParams();
   const navigate = useNavigate();
+  const { emailId } = useParams();
 
   const emailViewRef = React.useRef<HTMLDivElement>(null);
 
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [selectedEmail, setSelectedEmail] = React.useState<Email | null>(null);
-  const [generatedTemplate, setGeneratedTemplate] =
-    React.useState<Email | null>(null);
+  const [replyEmailForm, setReplyEmailForm] =
+    React.useState<EmailPayload | null>(null);
 
-  const getSafeHtml = async (email: Email) => {
-    const body = email.body;
-    const markdownHtml = await marked(body);
-    const sanitizedHtml = DOMPurify.sanitize(markdownHtml);
-    return { ...email, sanitized: sanitizedHtml };
-  };
-
-  useEffect(() => {
-    // Fetch data from the API
-    // fetch(`/api/posts?q=${q}`)
-    //   .then((res) => res.json())
-    //   .then((data) => setPosts(data));
-
+  React.useEffect(() => {
     const fetchEmail = async () => {
-      console.log("emailId", emailId);
-      const email = await getSafeHtml(mockEmails[0]);
+      try {
+        setLoading(true);
+        const res = await Axios.get<ApiResponse<Email>>(`/emails/${emailId}`);
+        const email = res.data.data;
+        setSelectedEmail(email);
 
-      // Simulate an API request
-      setSelectedEmail(email);
+        // set the form data
+        const updatedReferences = email?.references
+          ? [...email?.references, email?.messageId]
+          : [email?.messageId || ""];
+        setReplyEmailForm({
+          from: email?.to.text || "", // to is from the selected email
+          to: email?.from.text || "", // from is from the selected email
+          subject: `Re: ${email?.subject}`,
+          text: "",
+          inReplyTo: email?.messageId || "",
+          references: updatedReferences,
+          threadId: email?.threadId || "",
+        });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchEmail();
-  }, [emailId]);
+    if (emailId) fetchEmail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onClickReply = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
+    // auto scroll to the bottom
     if (emailViewRef.current) {
       emailViewRef.current.scrollIntoView({ behavior: "smooth" });
       emailViewRef.current.scrollTo({
@@ -54,22 +61,59 @@ export default function EmailDetailPage() {
         behavior: "smooth", // Or 'auto' for instant scroll
       });
     }
-
-    // TODO: Generate reply template
-    setGeneratedTemplate({
-      from: selectedEmail?.from || "",
-      subject: `Re: ${selectedEmail?.subject}`,
-      body: "",
-      timestamp: Date.now(),
-    });
   };
 
-  const onSubmitEmail = (
+  const onSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (replyEmailForm) {
+      setReplyEmailForm({
+        ...replyEmailForm,
+        subject: e.target.value,
+      });
+    }
+  };
+  const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (replyEmailForm) {
+      setReplyEmailForm({
+        ...replyEmailForm,
+        text: e.target.value,
+      });
+    }
+  };
+
+  const onSubmitReview = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
 
-    // TODO: Implement reply functionality
+    try {
+      await Axios.post<ApiResponse<{ id: string; threadId: string }>>(
+        `/emails/drafts`,
+        { ...replyEmailForm }
+      );
+      alert("Email was Reviewed!");
+
+      navigate(`/reviews`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onSendEmail = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    try {
+      await Axios.post<ApiResponse<{ id: string; threadId: string }>>(
+        `/emails/send`,
+        { ...replyEmailForm }
+      );
+      alert("Email sent!");
+
+      navigate(`/`);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -78,7 +122,7 @@ export default function EmailDetailPage() {
       <div className="fixed h-[40px] w-full bg-gray-50 flex flex-row items-center justify-start px-4 border-b">
         <button
           className="hover:bg-gray-100 p-2 rounded-lg"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/")}
         >
           <AiOutlineArrowLeft />
         </button>
@@ -89,94 +133,29 @@ export default function EmailDetailPage() {
           ref={emailViewRef}
           className="flex flex-col justify-between h-[calc(100vh-92px)] mt-[40px] overflow-y-auto"
         >
-          {selectedEmail ? (
+          {!loading ? (
             <>
-              <div className="bg-white py-4 px-6">
-                <h3 className="text-2xl font-semibold py-4">
-                  {selectedEmail.subject}
-                </h3>
-
-                <div className="flex justify-between pb-8">
-                  <div className="flex items-center">
-                    {/* TODO: Replace with actual avatar component */}
-                    <div className="w-8 h-8 rounded-full bg-gray-300 mr-2"></div>
-                    <div>
-                      <p className="text-sm font-semibold">
-                        {selectedEmail.from}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {formatDate(selectedEmail.timestamp)}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    title="Reply"
-                    className="hover:bg-gray-100 p-2 rounded-lg"
-                    onClick={(e) => onClickReply(e)}
-                  >
-                    <BsReply size={24} />
-                  </button>
-                </div>
-
-                <div
-                  className="whitespace-pre-wrap p-4"
-                  dangerouslySetInnerHTML={{
-                    __html: selectedEmail.sanitized || selectedEmail.body,
-                  }}
+              {selectedEmail && (
+                <EmailDetailCard
+                  email={selectedEmail}
+                  onClickReply={onClickReply}
                 />
-              </div>
-              {generatedTemplate ? (
-                <div className="flex flex-col border m-4 bg-white rounded-lg drop-shadow-lg p-4">
-                  <form className="flex flex-col gap-4">
-                    {/* <input
-                      type="text"
-                      placeholder="To"
-                      className="py-1 px-2"
-                      defaultValue={generatedTemplate.from}
-                    /> */}
-                    <div className="flex flex-row gap-4 justify-between">
-                      <input
-                        type="text"
-                        placeholder="Subject"
-                        className="flex grow py-1 px-2 border"
-                        defaultValue={generatedTemplate.subject}
-                      />
-                      <button
-                        onClick={() => {
-                          setGeneratedTemplate(null);
-                        }}
-                        className="hover:bg-gray-100 p-2 rounded-lg"
-                      >
-                        <FiX />
-                      </button>
-                    </div>
-                    <textarea
-                      placeholder="Message"
-                      className="py-1 px-2 h-40 focus:outline-none"
-                      autoFocus
-                      defaultValue={generatedTemplate.body}
-                    />
-                    <div className="flex justify-start gap-2">
-                      <button
-                        className="bg-blue-500 inline-flex flex-row text-white text-sm items-center gap-2 py-2 px-3 rounded-xl"
-                        onClick={(e) => onSubmitEmail(e)}
-                      >
-                        <span>Review before Send</span>
-                        <BiMessageDots size={16} />
-                      </button>
-                      <button
-                        className="border border-blue-500 inline-flex flex-row text-blue-500 text-sm items-center gap-2 py-2 px-3 rounded-xl"
-                        onClick={(e) => onSubmitEmail(e)}
-                      >
-                        <span>Send</span>
-                        <BsSend size={16} />
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              ) : null}
+              )}
+              {replyEmailForm && (
+                <EmailForm
+                  replyEmailForm={replyEmailForm}
+                  onSubjectChange={onSubjectChange}
+                  onTextChange={onTextChange}
+                  primaryButtonText="Review Email"
+                  secondaryButtonText="Send Email"
+                  onClickPrimaryButton={onSubmitReview}
+                  onClickSecondaryButton={onSendEmail}
+                />
+              )}
             </>
-          ) : null}
+          ) : (
+            <EmailDetailCardSkelton itemNumber={1} />
+          )}
         </div>
       </div>
     </div>

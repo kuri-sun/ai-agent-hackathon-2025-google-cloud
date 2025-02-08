@@ -7,6 +7,9 @@ import {
   sendDraftEmail,
   updateDraftEmail,
   getReviewedDraftEmails,
+  getDraftEmail,
+  getEmailThreads,
+  getEmailThread,
 } from "../controllers/email";
 
 const router = express.Router();
@@ -20,6 +23,11 @@ router.get("/", getEmails);
  * GET /emails/drafts - Get all drafts
  */
 router.get("/drafts", getReviewedDraftEmails);
+
+/**
+ * GET /emails/threads - Get all threads
+ */
+router.get("/threads", getEmailThreads);
 
 /**
  * GET /emails/:emailId - Get email by emailId
@@ -42,6 +50,11 @@ router.get("/:emailId", getEmail);
  * @body {string} threadId - Thread id of the email
  */
 router.post("/send", sendEmail);
+
+/**
+ * GET /emails/drafts/:draftId - Get a draft email
+ */
+router.get("/drafts/:draftId", getDraftEmail);
 
 /**
  * POST /emails/drafts - Create a draft email
@@ -77,5 +90,10 @@ router.put("/drafts/:draftId", updateDraftEmail);
  * @param {string} draftId - Draft id of the draft email
  */
 router.post("/drafts/:draftId/send", sendDraftEmail);
+
+/**
+ * GET /emails/threads - Get all threads
+ */
+router.get("/threads/:threadId", getEmailThread);
 
 export default router;

@@ -10,10 +10,6 @@ type EmailOptions = {
   threadId?: string;
 } & Mail.Options;
 
-type DraftEmailOptions = {
-  draftId?: string;
-} & Mail.Options;
-
 // Helper function to set up the OAuth2 Client
 const setupGmailClient = (auth: {
   clientId: string;
@@ -106,7 +102,7 @@ export const getMessages = async (
 };
 
 /**
- *  (Not in use) Get a message using Gmail API
+ *  Get a message using Gmail API
  */
 export const getMessage = async (
   auth: {
@@ -129,8 +125,9 @@ export const getMessage = async (
 
     // Parse the messages from RAW
     const parsedMessage = await parseRawEmail(messageData.data.raw);
+    delete messageData.data.raw;
 
-    return parsedMessage;
+    return { ...parsedMessage, ...messageData.data };
   } catch (error) {
     throw new Error(
       "Error getting from Gmail API: " + (error as Error).message
@@ -160,6 +157,7 @@ export const sendMessage = async (
       to,
       subject,
       text,
+      html: text,
       inReplyTo,
       references,
     });
@@ -177,6 +175,52 @@ export const sendMessage = async (
   } catch (err) {
     throw new Error(
       "Gmail API: Error sending email: " + (err as Error).message
+    );
+  }
+};
+
+/**
+ *  Get a draft using Gmail API
+ */
+export const getDraft = async (
+  auth: {
+    clientId: string;
+    accessToken: string;
+    refreshToken: string;
+    expiryDate: number;
+  },
+  draftId: string
+) => {
+  const gmail = setupGmailClient({ ...auth });
+
+  try {
+    // Call Gmail API to get one draft
+    const messageData = await gmail.users.drafts.get({
+      userId: "me",
+      id: draftId,
+      format: "raw",
+    });
+
+    // Parse the messages from RAW
+    const parsedMessage = await parseRawEmail(messageData.data.message?.raw);
+
+    // Get the review.
+    const reviewResult = await ReviewResult.findByDraftId({
+      draftId,
+    });
+
+    const merged = {
+      id: messageData.data.id,
+      ...messageData.data.message,
+      ...parsedMessage,
+      reviewResult,
+    };
+    delete merged.raw;
+
+    return merged;
+  } catch (error) {
+    throw new Error(
+      "Error getting from Gmail API: " + (error as Error).message
     );
   }
 };
@@ -231,11 +275,11 @@ export const getDrafts = async (
     // Parse the draft from RAW
     const parsedDrafts = await Promise.all(
       draftsData.map(async (draft) => {
-        draft.message;
         const parsed = await parseRawEmail(draft.message?.raw);
         const merged = {
           ...parsed,
           draftId: draft.id,
+          threadId: draft.message?.threadId,
           reviewResult: draft.reviewResult,
         };
 
@@ -274,17 +318,19 @@ export const createDraft = async (
       to,
       subject,
       text,
+      html: text,
       inReplyTo,
       references,
     });
 
+    console.log("thread", threadId);
     // compose draft email
     const response = await gmail.users.drafts.create({
       userId: "me",
       requestBody: {
         message: {
-          raw,
           threadId,
+          raw,
         },
       },
     });
@@ -342,6 +388,7 @@ export const updateDraft = async (
       to,
       subject,
       text,
+      html: text,
       references: references,
       inReplyTo,
     });
@@ -371,10 +418,18 @@ export const updateDraft = async (
     );
 
     // update the review result in DB.
-    ReviewResult.updateByDraftId({
-      draftId,
-      reviews: geminiReview.reviews,
-    });
+    const found = await ReviewResult.findByDraftId({ draftId });
+    if (!found) {
+      await ReviewResult.create({
+        draftId,
+        reviews: geminiReview.reviews,
+      });
+    } else {
+      await ReviewResult.updateByDraftId({
+        draftId,
+        reviews: geminiReview.reviews,
+      });
+    }
 
     // return updated.data;
     return { ...updated.data, reviewResult: geminiReview };
@@ -412,6 +467,101 @@ export const sendDraft = async (
   } catch (err) {
     throw new Error(
       "Gmail API: Error sending email: " + (err as Error).message
+    );
+  }
+};
+
+/**
+ * Geta a list of threads using Gmail API
+ */
+export const getThreads = async (
+  auth: {
+    clientId: string;
+    accessToken: string;
+    refreshToken: string;
+    expiryDate: number;
+  },
+  q: string = "",
+  maxResults: number = 10,
+  pageToken: string | undefined = undefined
+) => {
+  const gmail = setupGmailClient({ ...auth });
+
+  try {
+    // Call Gmail API to get emails
+    const listResponse = await gmail.users.threads.list({
+      userId: "me",
+      labelIds: ["INBOX", "CATEGORY_PERSONAL"],
+      q,
+      maxResults,
+      pageToken,
+    });
+
+    const threads = listResponse.data.threads || [];
+    const nextPageToken = listResponse.data.nextPageToken;
+
+    // Call Gmail API to get one email
+    const threadData = await Promise.all(
+      threads.map(async (thread) => {
+        const threadResponse = await gmail.users.threads.get({
+          userId: "me",
+          id: thread.id as string,
+        });
+
+        return threadResponse.data;
+      })
+    );
+
+    return { threads: threadData, nextPageToken };
+  } catch (error) {
+    throw new Error(
+      "Error getting from Gmail API: " + (error as Error).message
+    );
+  }
+};
+
+/**
+ * Get a thread using Gmail API
+ */
+export const getThread = async (
+  auth: {
+    clientId: string;
+    accessToken: string;
+    refreshToken: string;
+    expiryDate: number;
+  },
+  threadId: string
+) => {
+  const gmail = setupGmailClient({ ...auth });
+
+  try {
+    // Call Gmail API to get one email
+    const threadData = await gmail.users.threads.get({
+      userId: "me",
+      id: threadId,
+      format: "minimal",
+    });
+
+    // Parse the messages from RAW
+    const threadWithMessages = await Promise.all(
+      threadData.data.messages?.map(async (message) => {
+        const messageResponse = await gmail.users.messages.get({
+          userId: "me",
+          id: message.id as string,
+          format: "raw",
+        });
+
+        const parsed = await parseRawEmail(messageResponse.data.raw);
+        const merged = { ...message, ...parsed };
+        delete merged.raw;
+        return merged;
+      }) || []
+    );
+
+    return threadWithMessages;
+  } catch (error) {
+    throw new Error(
+      "Error getting from Gmail API: " + (error as Error).message
     );
   }
 };

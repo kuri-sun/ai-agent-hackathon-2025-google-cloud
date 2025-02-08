@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { Axios } from "../axios";
+import geminiLogo from "../assets/gemini-logo.png";
 
 const LoginPage = () => {
   const naivgate = useNavigate();
@@ -58,11 +59,7 @@ const LoginPage = () => {
         <footer className="text-gray-400 text-sm flex flex-col gap-4 items-center">
           <div className="flex flex-row gap-1 items-baseline">
             <span className="font-light text-sm">powered with</span>
-            <img
-              src="./gemini-logo.png"
-              alt="gemini-logo"
-              className="h-[20px]"
-            />
+            <img src={geminiLogo} alt="gemini-logo" className="h-[20px]" />
           </div>
           <div className="flex flex-row gap-4">
             <a href="" className="underline text-blue-500">
