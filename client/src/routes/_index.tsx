@@ -9,13 +9,11 @@ import { BiRevision } from "react-icons/bi";
 
 export default function IndexPage() {
   const navigate = useNavigate();
-  const { isEmailsLoaded, loading, emails, refreshEmails } = useEmail();
+  const { loading, emails, refreshEmails } = useEmail();
 
   // Fetch a list of emails
   useEffect(() => {
-    if (!isEmailsLoaded) {
-      refreshEmails();
-    }
+    refreshEmails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
