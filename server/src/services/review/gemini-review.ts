@@ -5,7 +5,7 @@ import {
 } from "@google-cloud/vertexai";
 import { Review } from "../../models/review";
 
-type GeminiReviewOutput = {
+export type GeminiReviewOutput = {
   reviews: Review[];
 };
 
@@ -28,7 +28,7 @@ export const generateEmailReviewResultFromGemini = async (
         },
       ],
       generationConfig: {
-        maxOutputTokens: 2048,
+        maxOutputTokens: 4096,
         temperature: 0.2,
         topP: 1,
         topK: 32,
@@ -36,17 +36,16 @@ export const generateEmailReviewResultFromGemini = async (
     });
 
     const prompt = `
-        近年では、メールの誤送信、内容の不備、敬語の使い間違い、など、ビジネスの場面でのメールに関するミスが多発しています。
+        近年では、メールの誤送信、内容の不備、敬語の使い間違いなど、日常的な場面からビジネスの場面まで、メールから起こるコミュニケーションミスが多発しています。
         1. メールの内容と送り先、CC、BCCのアドレスが文脈から予測するに、適しているかどうか
         2. メールの内容が適切かどうか
         3. 敬語の使い方が正しいかどうか
-        4. 添付ファイルが正しいかどうか
+        4. メールの内容から予測するに、添付ファイル、そのファイル名が適切かどうか
         5. メールの文面が適切かどうか
         6. メールのフォーマットが適切かどうか
         7. メールの文法が正しいかどうか
-        8. メールの内容が適切かどうか
 
-        以下のメール内容を確認し, レビューの出力を\`{ "reviews": [ { level: "danger" | "warning" | "info"; confidence: number;  comment: string; }, ... ] }\`のJSON Objectのみ、でお願いします。(そのままJSON.stringfyできるような形):
+        以下のメール内容を確認し, どの部分を、どのように直せばいいのかを、具体的な直すべきポイントを挙げ、レビューをお願いします。一つ一つのレビューのコメントは200~400文字ほどでお願いします。レビューの出力は\`{ "reviews": [ { level: "danger" | "warning" | "info"; confidence: number;  comment: string; }, ... ] }\`のJSON Object形式で、そのままJSON.stringfyを適応できるような形でお願いします。:
         ${emailContent}
       `;
 

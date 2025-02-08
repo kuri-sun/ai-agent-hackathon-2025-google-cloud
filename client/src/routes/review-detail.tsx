@@ -148,6 +148,28 @@ export default function ReviewDetailPage() {
     }
   };
 
+  const onSaveDraft = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    try {
+      setProcessingReview(true);
+      const updated = await Axios.put<ApiResponse<DraftEmail>>(
+        `/emails/drafts/${draftId}`,
+        {
+          ...replyEmailForm,
+          isReview: false,
+        }
+      );
+
+      // TODO: show the "updated" popup or sth
+      setProcessingReview(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const onSendDraft = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -223,6 +245,8 @@ export default function ReviewDetailPage() {
                       isClose={false}
                       primaryButtonText={t("Send")}
                       onClickPrimaryButton={onSendDraft}
+                      secondaryButtonText={t("Save Draft")}
+                      onClickSecondaryButton={onSaveDraft}
                     />
                   )}
                 </div>

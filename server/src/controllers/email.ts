@@ -185,7 +185,8 @@ export const updateDraftEmail = async (req: Request, res: Response) => {
         expiryDate,
       },
       req.body,
-      req.params.draftId
+      req.params.draftId,
+      req.body.isReview
     );
 
     res.status(200).json({ success: true, data });
