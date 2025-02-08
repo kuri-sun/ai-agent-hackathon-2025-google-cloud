@@ -74,16 +74,6 @@ function Header({ className = "" }: { className?: string }) {
                 className="h-10 w-10 rounded-full border"
               />
             </Dropdown>
-            {/* <div className="absolute right-0 top-10 bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-2 flex flex-col gap-2 border">
-              <div>
-                <button
-                  onClick={() => logOut()}
-                  className="text-red-600 font-semibold hover:bg-red-100 p-2 rounded-lg"
-                >
-                  Logout
-                </button>
-              </div>
-            </div> */}
           </div>
         ) : (
           <div />
