@@ -1,6 +1,6 @@
 services:
   google-hackathon:
-    image: asia-northeast1-docker.pkg.dev/stable-century-449015-j0/google-cloud-ai-hackathon-2025/google-cloud-hackathonn-2025-api:latest
+    image: your-docker-image-tag:latest
     volumes:
       - .:/app
     ports:
