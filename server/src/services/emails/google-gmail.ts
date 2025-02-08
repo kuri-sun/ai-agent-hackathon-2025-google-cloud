@@ -3,8 +3,11 @@ import { OAuth2Client } from "google-auth-library";
 import { gmail } from "@googleapis/gmail";
 import { composeRawEmail, parseRawEmail } from "../../utils/email-format";
 import Mail from "nodemailer/lib/mailer";
-import { generateEmailReviewResultFromGemini } from "../review/gemini-review";
-import { ReviewResult } from "../../models/review";
+import {
+  GeminiReviewOutput,
+  generateEmailReviewResultFromGemini,
+} from "../review/gemini-review";
+import { Review, ReviewResult } from "../../models/review";
 
 type EmailOptions = {
   threadId?: string;
@@ -305,7 +308,8 @@ export const createDraft = async (
     refreshToken: string;
     expiryDate: number;
   },
-  email: EmailOptions
+  email: EmailOptions,
+  isReview: boolean = true
 ) => {
   const gmail = setupGmailClient({ ...auth });
   const { from, to, bcc, cc, subject, text, inReplyTo, references, threadId } =
@@ -323,7 +327,6 @@ export const createDraft = async (
       references,
     });
 
-    console.log("thread", threadId);
     // compose draft email
     const response = await gmail.users.drafts.create({
       userId: "me",
@@ -336,16 +339,19 @@ export const createDraft = async (
     });
 
     // genereate review result from Gemini
-    const geminiReview = await generateEmailReviewResultFromGemini(
-      JSON.stringify({
-        from,
-        to,
-        cc,
-        bcc,
-        subject,
-        text,
-      })
-    );
+    let geminiReview = { reviews: [] } as GeminiReviewOutput;
+    if (isReview) {
+      geminiReview = await generateEmailReviewResultFromGemini(
+        JSON.stringify({
+          from,
+          to,
+          cc,
+          bcc,
+          subject,
+          text,
+        })
+      );
+    }
 
     // create a review result in DB.
     if (!response.data.id) {
@@ -375,7 +381,8 @@ export const updateDraft = async (
     expiryDate: number;
   },
   email: EmailOptions,
-  draftId: string
+  draftId: string,
+  isReview: boolean = true
 ) => {
   const gmail = setupGmailClient({ ...auth });
   const { from, to, cc, bcc, subject, text, inReplyTo, references, threadId } =
@@ -406,29 +413,32 @@ export const updateDraft = async (
     });
 
     // genereate review result from Gemini
-    const geminiReview = await generateEmailReviewResultFromGemini(
-      JSON.stringify({
-        from,
-        to,
-        cc,
-        bcc,
-        subject,
-        text,
-      })
-    );
+    let geminiReview = { reviews: [] } as GeminiReviewOutput;
+    if (isReview) {
+      geminiReview = await generateEmailReviewResultFromGemini(
+        JSON.stringify({
+          from,
+          to,
+          cc,
+          bcc,
+          subject,
+          text,
+        })
+      );
 
-    // update the review result in DB.
-    const found = await ReviewResult.findByDraftId({ draftId });
-    if (!found) {
-      await ReviewResult.create({
-        draftId,
-        reviews: geminiReview.reviews,
-      });
-    } else {
-      await ReviewResult.updateByDraftId({
-        draftId,
-        reviews: geminiReview.reviews,
-      });
+      // update the review result in DB.
+      const found = await ReviewResult.findByDraftId({ draftId });
+      if (!found) {
+        await ReviewResult.create({
+          draftId,
+          reviews: geminiReview.reviews,
+        });
+      } else {
+        await ReviewResult.updateByDraftId({
+          draftId,
+          reviews: geminiReview.reviews,
+        });
+      }
     }
 
     // return updated.data;
