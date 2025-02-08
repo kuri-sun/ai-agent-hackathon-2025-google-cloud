@@ -1,0 +1,82 @@
+steps:
+  # Build the frontend
+  - name: "node:22"
+    entrypoint: npm
+    args: ["run", "build"]
+    dir: "client"
+    id: "build-frontend" # Give this step an ID for referencing it later
+
+  # Move frontend build artifacts
+  - name: "ubuntu" # Or a lightweight image with `mv`
+    entrypoint: bash
+    args: ["-c", "mv client/build server/"]
+    # The `dependsOn` makes sure this runs after frontend build
+    dependsOn: ["build-frontend"]
+
+  # Build the backend (server)
+  - name: "node:22" # Or a suitable Node.js image
+    entrypoint: npm
+    args: ["run", "build"]
+    dir: "server"
+    id: "build-backend" # Give this step an ID for referencing it later
+
+  # Build the Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "$_GCR_HOSTNAME/$_PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA",
+        ".",
+      ]
+    dir: "server"
+    # The `dependsOn` makes sure this runs after backend build
+    dependsOn: ["build-backend"]
+
+  # Push the Docker image to Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "$_GCR_HOSTNAME/$_PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA"]
+    dir: "server"
+
+  # Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdk-platform/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "$_SERVICE_NAME"
+      - "--image"
+      - "$_GCR_HOSTNAME/$_PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA"
+      - "--region"
+      - "$_REGION"
+      - "--platform=managed"
+      - "--set-env-vars"
+      - "GOOGLE_CLOUD_PROJECT_ID=$_PROJECT_ID"
+      - "--set-env-vars"
+      - "GOOGLE_CLOUD_PROJECT_REGION=$_REGION"
+      - "--set-env-vars"
+      - "GOOGLE_OIDC_CLIENT_SECRET=$_GOOGLE_OIDC_CLIENT_SECRET"
+      - "--set-env-vars"
+      - "GOOGLE_OIDC_CALLBACK_URL=$_GOOGLE_OIDC_CALLBACK_URL"
+      - "--set-env-vars"
+      - "SERVER_PORT=$_SERVER_PORT"
+      - "--set-env-vars"
+      - "MONGODB_URI=$_MONGODB_URI"
+      - "--set-env-vars"
+      - "ENV=prod"
+      - "--set-env-vars"
+      - "NODE_OPTIONS=--max-old-space-size=4096"
+    # dependsOn is not needed here, as push will be done before this step
+    # No need to update traffic separately, as the `deploy` command with the same service name already handles that.
+
+substitutions:
+  _GCR_HOSTNAME: "asia-northeast1-docker.pkg.dev"
+  _PROJECT_ID: "${_GOOGLE_CLOUD_PROJECT_ID}"
+  _SERVICE_NAME: "${_CLOUD_RUN_NAME}"
+  _REGION: "${_CLOUD_RUN_REGION}"
+  _GOOGLE_OIDC_CLIENT_SECRET: "${_GOOGLE_OIDC_CLIENT_SECRET}"
+  _GOOGLE_OIDC_CALLBACK_URL: "${_GOOGLE_OIDC_CALLBACK_URL}"
+  _SERVER_PORT: "8080"
+  _MONGODB_URI: "${_MONGODB_URI}"
+# Secrets are best handled through Cloud Build Triggers, not directly in cloudbuild.yaml
+# See instructions below on how to set secrets in Cloud Build triggers.
