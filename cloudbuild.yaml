@@ -43,7 +43,7 @@ steps:
     args:
       [
         "push",
-        "$_GCR_HOSTNAME/$_PROJECT_ID/$_ARTIFACT_REGISTRY_NAM/$_CLOUD_RUN_NAME:$COMMIT_SHA",
+        "$_GCR_HOSTNAME/$_PROJECT_ID/$_ARTIFACT_REGISTRY_NAME/$_CLOUD_RUN_NAME:$COMMIT_SHA",
       ]
     dir: "server"
 
@@ -55,7 +55,7 @@ steps:
       - "deploy"
       - "$_CLOUD_RUN_NAME"
       - "--image"
-      - "$_GCR_HOSTNAME/$_PROJECT_ID/$_ARTIFACT_REGISTRY_NAM/$_CLOUD_RUN_NAME:$COMMIT_SHA"
+      - "$_GCR_HOSTNAME/$_PROJECT_ID/$_ARTIFACT_REGISTRY_NAME/$_CLOUD_RUN_NAME:$COMMIT_SHA"
       - "--region"
       - "$_REGION"
       - "--platform=managed"
