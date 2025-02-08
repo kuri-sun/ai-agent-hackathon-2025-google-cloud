@@ -10,8 +10,6 @@ steps:
   - name: "ubuntu" # Or a lightweight image with `mv`
     entrypoint: bash
     args: ["-c", "mv client/build server/"]
-    # The `dependsOn` makes sure this runs after frontend build
-    dependsOn: ["build-frontend"]
 
   # Build the backend (server)
   - name: "node:22" # Or a suitable Node.js image
@@ -30,8 +28,6 @@ steps:
         ".",
       ]
     dir: "server"
-    # The `dependsOn` makes sure this runs after backend build
-    dependsOn: ["build-backend"]
 
   # Push the Docker image to Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
@@ -66,8 +62,6 @@ steps:
       - "ENV=prod"
       - "--set-env-vars"
       - "NODE_OPTIONS=--max-old-space-size=4096"
-    # dependsOn is not needed here, as push will be done before this step
-    # No need to update traffic separately, as the `deploy` command with the same service name already handles that.
 
 substitutions:
   _GCR_HOSTNAME: "asia-northeast1-docker.pkg.dev"
