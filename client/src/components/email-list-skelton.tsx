@@ -11,12 +11,12 @@ export default function EmailListSkelton({
             {/* Skeleton for From */}
             <div className="w-32 h-4 bg-gray-300 dark:bg-gray-500 rounded"></div>
             {/* Skeleton for Date */}
-            <div className="w-16 h-4 bg-gray-30 dark:bg-gray-500 rounded"></div>
+            <div className="w-16 h-4 bg-gray-300 dark:bg-gray-500 rounded"></div>
           </div>
           {/* Skeleton for Subject */}
-          <div className="w-48 h-5 bg-gray-30 dark:bg-gray-500 rounded mt-2"></div>
+          <div className="w-48 h-5 bg-gray-300 dark:bg-gray-500 rounded mt-2"></div>
           {/* Skeleton for Body */}
-          <div className="w-full h-12 bg-gray-30 dark:bg-gray-500 rounded mt-1"></div>
+          <div className="w-full h-12 bg-gray-300 dark:bg-gray-500 rounded mt-1"></div>
         </div>
       ))}
     </div>
