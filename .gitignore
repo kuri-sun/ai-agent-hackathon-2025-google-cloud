@@ -1,1 +1,3 @@
-*.sh
+**/run.sh
+build-local.sh
+deploy-local.sh
