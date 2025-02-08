@@ -8,5 +8,12 @@
   "Re-review": "再レビューする",
   "Email subject": "メールの件名",
   "Your message here": "メッセージを入力してください",
-  "Processing...": "処理中しています..."
+  "Processing...": "処理中しています...",
+  "Sign in with Google": "Googleでサインイン",
+  "Terms and Conditions": "利用規約",
+  "Privacy Policy": "プライバシーポリシー",
+  "Important Note": "重要",
+  "Co Email is a mail review tool that analyzes context, enabling confident email delivery.": "メールの背景を精査し、確信を持って送信できるメールレビューツールです。",
+  "To the AI Agent Hackathon with Google Cloud team.": "AI Agent Hackathon with Google Cloud チームの方へ。",
+  "This app is currently undergoing Google's OAuth App Verification process. Please log in using the test account below.": "このアプリは現在、GoogleのOAuth App Verificationを実施中です。以下のテストアカウントを使用してログインしてください。"
 }
