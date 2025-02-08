@@ -48,7 +48,7 @@ steps:
     dir: "server"
 
   # Deploy to Cloud Run
-  - name: "gcr.io/google.com/cloudsdk-platform/cloud-sdk"
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
       - "run"
