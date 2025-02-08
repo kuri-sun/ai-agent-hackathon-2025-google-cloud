@@ -15,7 +15,7 @@ Co Email は、メールの内容とその背景を考慮しながら、人々�
 
 **Test Account:** <br/>
 email: `testuserrukis@gmail.com`<br/>
-password: `TestRuki,1212`
+password: `TestRuki,1212`<br/>
 
 <div align="left">
   <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="このプロジェクトはGeminiで構築されています"/>
