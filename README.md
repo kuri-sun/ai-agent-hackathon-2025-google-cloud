@@ -6,7 +6,16 @@
   </a>
 </h1>
 
-Co Email は、メールの内容を考慮しながら、より自信を持ってメールを送信できるようにするメールレビューツールです。
+Co Email は、メールの内容とその背景を考慮しながら、人々が、メール内で使用している言語に対して、より自信を持って、メールを送信できるようにするメールレビューツールです。日常的に起こるカジュアルな場面から、プロフェッショナルな場面にて応用可能です。<br/>
+また、レビューをする前に自身でチェック可能で、そのまま送信してしまう心配もありません。
+
+<br/>
+
+**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （確認が完了次第、皆さんのGoogleアカウントでも、利用可能です！🤩）
+
+**Test Account:** <br/>
+email: `testuserrukis@gmail.com`<br/>
+password: `TestRuki,1212`
 
 <div align="left">
   <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="このプロジェクトはGeminiで構築されています"/>
