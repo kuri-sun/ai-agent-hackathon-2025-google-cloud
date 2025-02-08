@@ -42,7 +42,7 @@ function Dropdown({
         {children}
       </button>
       {isOpen && (
-        <div className="absolute top-8 right-0 mt-2 p-2 bg-white border border-gray-200 rounded shadow-md">
+        <div className="absolute top-8 right-0 mt-2 p-2 bg-white dark:bg-neutral-800 border border-gray-200 rounded shadow-md">
           <ul className="">
             {items.map((item) => (
               <li key={item.value}>
@@ -52,7 +52,7 @@ function Dropdown({
                     item.onClick(item.value);
                   }}
                   className={twMerge(
-                    "block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left",
+                    "block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:hover:bg-black/60 w-full text-left",
                     item.className
                   )}
                 >

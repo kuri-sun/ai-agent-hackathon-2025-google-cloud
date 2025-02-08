@@ -7,6 +7,7 @@ import { setUILanguage } from "../utils/i18n";
 import { useTranslation } from "react-i18next";
 import loginImage from "../assets/login-page.jpg";
 import GoogleHackathonImportantNote from "../components/google-hackathon-important-note";
+import Header from "../components/header";
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -41,38 +42,9 @@ const LoginPage = () => {
     }
   };
 
-  const onToggleLanguageClick = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setUILanguage(e.target.value);
-  };
-
   return (
-    <div className="h-screen">
-      <div
-        className={twMerge(
-          "fixed top-0 flex z-[50] w-full transition-all duration-1000 border-b"
-        )}
-      >
-        <div
-          className={twMerge(
-            "relative text-lg flex flex-row gap-4 items-center justify-center sm:justify-between w-full rounded-lg bg-white text-black dark:text-white dark:bg-neutral-800 h-[52px] px-4"
-          )}
-        >
-          {/* Company Logo */}
-          <div />
-          {/* User Profile */}
-          <div className="relative flex flex-row gap-6">
-            <select
-              className="p-2 rounded-lg border"
-              name="language select"
-              onChange={onToggleLanguageClick}
-              defaultValue={document.documentElement.lang}
-            >
-              <option value="ja">日本語</option>
-              <option value="en">English</option>
-            </select>
-          </div>
-        </div>
-      </div>
+    <main className="h-screen dark:bg-neutral-800 text-gray-600 dark:text-neutral-100">
+      <Header isAuth={false} />
 
       <div className="flex flex-col items-center justify-center justify-between h-full py-12">
         <div />
@@ -82,7 +54,9 @@ const LoginPage = () => {
           {/* Login */}
           <div className="w-1/4 flex flex-col items-start gap-6">
             <div className="flex flex-col items-start gap-8">
-              <h1 className="text-6xl text-neutral-700 font-bold">Co-Email</h1>
+              <h1 className="text-6xl text-neutral-700 dark:text-neutral-100 font-bold">
+                Co-Email
+              </h1>
               <h3 className="text-base text-neutral-400 font-light">
                 {t(
                   "Co Email is a mail review tool that analyzes context, enabling confident email delivery."
@@ -92,7 +66,7 @@ const LoginPage = () => {
             {/* FIXME: Remove this after the Oauth App Verification is done. */}
             <GoogleHackathonImportantNote />
             <button
-              className="inline-flex flex-row items-center gap-4 border-2 border-blue-600 text-blue-600 text-xl pl-10 pr-8 py-4 rounded-md border disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50 transition-colors duration-300"
+              className="inline-flex dark:text-neutral-200 dark:hover:bg-white/20 flex-row items-center gap-4 border-2 border-blue-600 dark:border-neutral-200 text-blue-600 text-xl pl-10 pr-8 py-4 rounded-md border disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50 transition-colors duration-300"
               onClick={onSignIn}
             >
               <span>{t("Sign in with Google")}</span>
@@ -117,7 +91,7 @@ const LoginPage = () => {
           <p>© 2025 Haruki Kuriwada</p>
         </footer>
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -46,9 +46,9 @@ export default function ReviewsPage() {
   return (
     <div className="flex flex-col w-5/6 ml-auto">
       {/* Header */}
-      <div className="fixed h-[40px] w-full bg-gray-50 flex flex-row items-center justify-start px-4 border-b">
+      <div className="fixed h-[40px] w-full flex flex-row items-center justify-start px-4 border-b">
         <button
-          className="hover:bg-gray-100 p-2 rounded-lg"
+          className="hover:bg-black/60 p-2 rounded-lg"
           onClick={refreshDrafts}
         >
           <BiRevision size={20} />
@@ -63,7 +63,7 @@ export default function ReviewsPage() {
               <button
                 key={index}
                 className={twMerge(
-                  "bg-white rounded-lg p-4 hover:bg-gray-100 cursor-pointer border-2 ",
+                  "rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-black/60 cursor-pointer border-2 ",
                   "focus:border-blue-300 focus:bg-blue-100"
                 )}
                 onClick={() => onSelectDraftEmail(draft)}

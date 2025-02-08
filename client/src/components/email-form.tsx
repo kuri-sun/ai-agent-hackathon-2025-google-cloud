@@ -44,7 +44,7 @@ export default function EmailForm({
   if (!isShow) return null;
 
   return (
-    <div className="flex flex-col border mx-4 mb-4 bg-white rounded-lg drop-shadow-lg p-4">
+    <div className="flex flex-col border mx-4 mb-4 rounded-lg drop-shadow-lg p-4">
       <form className="flex flex-col gap-4">
         {/* TODO: To: field can be specified by the user */}
         {/* <input
@@ -57,14 +57,14 @@ export default function EmailForm({
           <input
             type="text"
             placeholder={t("Email subject")}
-            className="flex grow py-1 px-2 border"
+            className="flex grow bg-transparent py-1 px-2 border"
             defaultValue={replyEmailForm.subject}
             onChange={onSubjectChange}
           />
           {isClose && (
             <button
               onClick={onClose}
-              className="hover:bg-gray-100 p-2 rounded-lg"
+              className="hover:bg-black/60 p-2 rounded-lg"
             >
               <FiX />
             </button>
@@ -72,7 +72,7 @@ export default function EmailForm({
         </div>
         <textarea
           placeholder={t("Your message here")}
-          className="py-1 px-2 h-40 focus:outline-none"
+          className="py-1 px-2 h-40 bg-transparent focus:outline-none"
           autoFocus
           defaultValue={replyEmailForm.text}
           onChange={onTextChange}

@@ -22,12 +22,14 @@ export default function EmailCard({
           <p className="text-sm font-light">{from}</p>
         </div>
         {/* Date */}
-        <p className="text-xs text-gray-500">{t(formatDate(date))}</p>
+        <p className="text-xs text-neutral-500 dark:text-neutral-200">
+          {t(formatDate(date))}
+        </p>
       </div>
       {/* Subject */}
       <h3 className="text-sm text-start font-semibold mt-2">{subject}</h3>
       {/* Body */}
-      <p className="text-xs text-start text-gray-600 mt-1 line-clamp-5">
+      <p className="text-xs text-start text-neutral-500 dark:text-neutral-200 mt-1 line-clamp-5">
         {text}
       </p>
     </>

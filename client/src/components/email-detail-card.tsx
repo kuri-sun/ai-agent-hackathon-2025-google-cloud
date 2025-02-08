@@ -21,7 +21,7 @@ export default function EmailDetailCard({
   const { t } = useTranslation();
 
   return (
-    <div className="bg-white py-4 px-6 m-4 border shadow-md rounded-lg">
+    <div className="py-4 px-6 m-4 border shadow-md rounded-lg">
       <h3 className="text-2xl font-semibold py-4">{email.subject}</h3>
 
       <div className="flex justify-between pb-8">
@@ -30,13 +30,15 @@ export default function EmailDetailCard({
           <div className="w-8 h-8 rounded-full bg-gray-300 mr-2"></div>
           <div>
             <p className="text-sm font-semibold">{email.from.text}</p>
-            <p className="text-xs text-gray-500">{t(formatDate(email.date))}</p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-200">
+              {t(formatDate(email.date))}
+            </p>
           </div>
         </div>
         {onClickReply && (
           <button
             title="Reply"
-            className="hover:bg-gray-100 p-2 rounded-lg"
+            className="hover:bg-black/60 p-2 rounded-lg"
             onClick={onClickReply}
           >
             <BsReply size={24} />

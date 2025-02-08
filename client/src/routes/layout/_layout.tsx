@@ -48,18 +48,18 @@ const Layout = () => {
   }
 
   return (
-    <main className="">
+    <main className="text-gray-600 dark:text-neutral-100">
       {/* Header */}
       <Header />
       {/* SideBar */}
       <div className="h-[calc(100vh-52px)] mt-[52px]">
-        <div className="flex flex-row">
+        <div className="flex flex-row dark:bg-black/80 ">
           {/* Email Drawer View */}
           <nav className="fixed flex flex-col w-1/6">
-            <div className="flex flex-col h-[calc(100vh-52px)] bg-white border-r">
+            <div className="flex flex-col h-[calc(100vh-52px)] border-r">
               {tabs.map((tab) => (
                 <div key={tab.name}>
-                  <div className="flex flex-row bg-gray-50 gap-2 items-center border-b h-[40px] px-4">
+                  <div className="flex flex-row gap-2 items-center border-b h-[40px] px-4">
                     <h2 className="font-bold flex items-center">{tab.name}</h2>
                   </div>
                   <div className="flex flex-col">
@@ -67,7 +67,7 @@ const Layout = () => {
                       <Link
                         key={subtab.name}
                         to={subtab.path}
-                        className="flex flex-row justify-between gap-3 py-2 px-4 border-b hover:bg-gray-100 focus:bg-gray-100"
+                        className="flex flex-row justify-between gap-3 py-2 px-4 border-b hover:bg-gray-100 dark:hover:bg-black/60 focus:bg-gray-100 dark:focus:bg-gray-700"
                       >
                         {subtab.name}
                         {subtab.icon}

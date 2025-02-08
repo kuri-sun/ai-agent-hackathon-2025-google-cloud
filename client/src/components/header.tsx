@@ -5,12 +5,30 @@ import geminiLogo from "../assets/gemini-logo.png";
 import { useAuth } from "../context/auth-provider";
 import Dropdown from "./dropdown";
 import { setUILanguage } from "../utils/i18n";
+import { BsFillLightbulbFill } from "react-icons/bs";
 
-function Header({ className = "" }: { className?: string }) {
+function Header({
+  isAuth = true,
+  className = "",
+}: {
+  isAuth?: boolean;
+  className?: string;
+}) {
   const { user, logOut } = useAuth();
 
   const onToggleLanguageClick = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUILanguage(e.target.value);
+  };
+
+  const onToggleLightDarkMode = () => {
+    const html = document.querySelector("html");
+    if (html) {
+      html.classList.toggle("dark");
+      localStorage.setItem(
+        "dark",
+        html.classList.contains("dark") ? "dark" : ""
+      );
+    }
   };
 
   const dropdownItems = [
@@ -33,7 +51,7 @@ function Header({ className = "" }: { className?: string }) {
     >
       <div
         className={twMerge(
-          "relative text-lg flex flex-row gap-4 items-center justify-center sm:justify-between w-full rounded-lg bg-white text-black dark:text-white dark:bg-neutral-800 h-[52px] px-4"
+          "relative text-lg flex flex-row gap-4 items-center justify-center sm:justify-between w-full bg-white text-black dark:text-white dark:bg-neutral-800 h-[52px] px-8"
         )}
       >
         {/* Company Logo */}
@@ -53,18 +71,23 @@ function Header({ className = "" }: { className?: string }) {
             </div>
           </Link>
         </div>
-        {/* User Profile */}
-        {user ? (
-          <div className="relative flex flex-row gap-6">
-            <select
-              className="p-2 rounded-lg border"
-              name="language select"
-              onChange={onToggleLanguageClick}
-              defaultValue={document.documentElement.lang}
-            >
-              <option value="ja">日本語</option>
-              <option value="en">English</option>
-            </select>
+        <div className="relative flex flex-row gap-6">
+          <select
+            className="p-2 rounded-lg border bg-white dark:bg-neutral-800 cursor-pointer"
+            name="language select"
+            onChange={onToggleLanguageClick}
+            defaultValue={document.documentElement.lang}
+          >
+            <option value="ja">日本語</option>
+            <option value="en">English</option>
+          </select>
+          <button
+            onClick={onToggleLightDarkMode}
+            className="bg-white dark:bg-neutral-800 p-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-black/60"
+          >
+            <BsFillLightbulbFill size={24} />
+          </button>
+          {user ? (
             <Dropdown items={dropdownItems}>
               <img
                 src={user.avatar ?? "/images/profile.png"}
@@ -74,10 +97,8 @@ function Header({ className = "" }: { className?: string }) {
                 className="h-10 w-10 rounded-full border"
               />
             </Dropdown>
-          </div>
-        ) : (
-          <div />
-        )}
+          ) : null}
+        </div>
       </div>
     </div>
   );
