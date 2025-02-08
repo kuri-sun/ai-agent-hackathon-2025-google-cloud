@@ -8,8 +8,10 @@ export default function EmailForm({
   onSubjectChange,
   onTextChange,
   primaryButtonText,
+  isPrimaryDisabled = false,
   onClickPrimaryButton,
   secondaryButtonText = undefined,
+  isSecondaryDisabled = false,
   onClickSecondaryButton = undefined,
 }: {
   replyEmailForm: {
@@ -23,10 +25,12 @@ export default function EmailForm({
   onSubjectChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   primaryButtonText: string;
+  isPrimaryDisabled?: boolean;
   onClickPrimaryButton: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
   secondaryButtonText?: string | undefined;
+  isSecondaryDisabled?: boolean;
   onClickSecondaryButton?: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
@@ -42,12 +46,13 @@ export default function EmailForm({
   return (
     <div className="flex flex-col border mx-4 mb-4 bg-white rounded-lg drop-shadow-lg p-4">
       <form className="flex flex-col gap-4">
+        {/* TODO: To: field can be specified by the user */}
         {/* <input
-                      type="text"
-                      placeholder="To"
-                      className="py-1 px-2"
-                      defaultValue={replyEmailForm.from}
-                    /> */}
+          type="text"
+          placeholder="To"
+          className="flex grow py-1 px-2 border"
+          defaultValue={replyEmailForm.from}
+        /> */}
         <div className="flex flex-row gap-4 justify-between">
           <input
             type="text"
@@ -74,15 +79,20 @@ export default function EmailForm({
         />
         <div className="flex justify-start gap-2">
           <button
-            className="bg-blue-500 inline-flex flex-row text-white text-sm items-center gap-2 py-2 px-3 rounded-xl"
+            className="bg-blue-500 text-white text-sm inline-flex flex-row items-center gap-2 py-2 px-3 rounded-xl 
+             disabled:bg-blue-300 disabled:cursor-not-allowed"
             onClick={onClickPrimaryButton}
+            disabled={isPrimaryDisabled}
           >
             <span>{primaryButtonText}</span>
           </button>
+
           {secondaryButtonText && (
             <button
-              className="border border-blue-500 inline-flex flex-row text-blue-500 text-sm items-center gap-2 py-2 px-3 rounded-xl"
+              className="border border-blue-500 text-blue-500 text-sm inline-flex flex-row items-center gap-2 py-2 px-3 rounded-xl 
+               disabled:border-blue-300 disabled:text-blue-300 disabled:cursor-not-allowed"
               onClick={onClickSecondaryButton}
+              disabled={isSecondaryDisabled}
             >
               <span>{secondaryButtonText}</span>
             </button>

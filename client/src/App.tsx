@@ -9,30 +9,31 @@ import EmailDetailPage from "./routes/email-detail";
 import ReviewsPage from "./routes/reviews";
 import ReviewDetailPage from "./routes/review-detail";
 import AuthProvider from "./context/auth-provider";
-import EmailProvider from "./context/email-provider";
+import "./i18/config";
+import { setUILanguage } from "./utils/i18n";
 
 function App() {
+  React.useEffect(() => {
+    const lang = localStorage.getItem("lang");
+    setUILanguage(lang);
+  }, []);
+
   return (
     <>
       <BrowserRouter>
         <AuthProvider>
-          <EmailProvider>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/google/callback" element={<GoogleCallbackPage />} />
-              <Route path="/" element={<Layout />}>
-                <Route index element={<IndexPage />} />
-                <Route path="/inbox/:emailId" element={<EmailDetailPage />} />
-                <Route path="/reviews" element={<ReviewsPage />} />
-                <Route
-                  path="/reviews/:draftId"
-                  element={<ReviewDetailPage />}
-                />
-                {/* <Route path="/reviews/:reviewId" element={<ReviewDetailPage />} /> */}
-                <Route path="*" element={<NotFoundPage />} />
-              </Route>
-            </Routes>
-          </EmailProvider>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/google/callback" element={<GoogleCallbackPage />} />
+            <Route path="/" element={<Layout />}>
+              <Route index element={<IndexPage />} />
+              <Route path="/inbox/:emailId" element={<EmailDetailPage />} />
+              <Route path="/reviews" element={<ReviewsPage />} />
+              <Route path="/reviews/:draftId" element={<ReviewDetailPage />} />
+              {/* <Route path="/reviews/:reviewId" element={<ReviewDetailPage />} /> */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
         </AuthProvider>
       </BrowserRouter>
     </>
