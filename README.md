@@ -8,8 +8,10 @@
 
 Co Email は、メールの内容を考慮しながら、より自信を持ってメールを送信できるようにするメールレビューツールです。
 
-<img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="このプロジェクトはGeminiで構築されています"/>
-<img src="https://img.shields.io/badge/For-Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="このプロジェクトはAI Agent Hackathon with Google Cloudへ提出します。"/>
+<div align="left">
+  <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="このプロジェクトはGeminiで構築されています"/>
+  <img src="https://img.shields.io/badge/For-Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="このプロジェクトはAI Agent Hackathon with Google Cloudへ提出します。"/>
+</div>
 
 ## 技術スタック
 
@@ -37,11 +39,10 @@ Co Email は、メールの内容を考慮しながら、より自信を持っ�
 git clone https://github.com/kuri-sun/ai-agent-hackathon-2025-google-cloud.git
 ```
 
-2. `/server` ディレクトリへ移動します。（実行権限がない場合は以下を実行）
+2. `/server` ディレクトリへ移動します。（実行権限がない場合は`chmod +x ./build.sh`を実行）
 
 ```sh
 cd ai-agent-hackathon-2025-google-cloud/server
-chmod +x ./build.sh
 ```
 
 3. スクリプトを実行します。

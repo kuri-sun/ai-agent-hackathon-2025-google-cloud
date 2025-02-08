@@ -8,8 +8,10 @@
 
 Co Email is the email-review application that makes people more confident on their emails with considering about email context.
 
-<img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="This project is built with Gemini"/>
-<img src="https://img.shields.io/badge/For-Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="This projec is AI Agent Hackathon with Google Cloud"/>
+<div align="left">
+  <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="This project is built with Gemini"/>
+  <img src="https://img.shields.io/badge/For-Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="This projec is AI Agent Hackathon with Google Cloud"/>
+</div>
 
 ## Tech Stack
 
