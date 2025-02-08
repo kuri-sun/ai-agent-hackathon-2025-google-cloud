@@ -4,9 +4,11 @@
   <a href="README-EN.md">
     <img src="https://img.shields.io/badge/lang-English-brightgreen.svg" alt="Click to translate this into English.">
   </a>
-</h1>
+  <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="このプロジェクトはGeminiで構築されています"/>
+  <img src="https://img.shields.io/badge/Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="このプロジェクトはAI Agent Hackathon with Google Cloudへ提出します。"/>
+  </h1>
 
-Co Email は、メールの内容とその背景を考慮しながら、人々がより自信を持って、メールを送信できるようにするメールレビューツールです。日常的に起こるカジュアルな場面から、プロフェッショナルな場面にて応用可能です。<br/>
+Co Email は、メールの内容とその背景を考慮しながら、人々が、より自信を持って、メール送信できるようにするメールレビューツールです。カジュアルな場面から、プロフェッショナルな場面にて応用可能です。<br/>
 また、レビューをする前に自身でチェック可能で、そのまま送信してしまう心配もありません。
 
 <br/>
@@ -17,12 +19,13 @@ Co Email は、メールの内容とその背景を考慮しながら、人々�
 email: `testuserrukis@gmail.com`<br/>
 password: `TestRuki,1212`<br/>
 
-<br/>
+## アプリの機能
 
-<div align="left">
-  <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="このプロジェクトはGeminiで構築されています"/>
-  <img src="https://img.shields.io/badge/For-Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="このプロジェクトはAI Agent Hackathon with Google Cloudへ提出します。"/>
-</div>
+1. Gmail の受信トレイと同期します（現在は「個人」ラベルのメールのみ対応）。
+2. 「受信トレイ」でメールを選択し、返信を作成します。
+3. メール本文を作成後、「このメールをレビューする」をクリックします。
+4. 「レビューボックス」に移動し、下書きメールの内容を選択します。
+5. Vertex AI からのレビュー結果を確認できます。
 
 ## 技術スタック
 
@@ -73,14 +76,6 @@ cp .env.example .env
 ```sh
 docker compose up
 ```
-
-## アプリの機能
-
-1. Gmail の受信トレイと同期します（現在は「個人」ラベルのみ対応）。
-2. 受信トレイでメールを選択し、返信を作成します。
-3. メール本文を作成後、「送信前にレビュー」をクリックします。
-4. 「ReviewBox」に移動し、下書きメールの内容を選択します。
-5. Vertex AI からのレビュー結果を確認できます。
 
 ---
 

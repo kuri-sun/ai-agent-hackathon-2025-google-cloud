@@ -1,9 +1,9 @@
 <h1>
   <span>Co Email<span>
   &nbsp;
-  <a href="README.md">
-    <img src="https://img.shields.io/badge/lang-JA-brightgreen.svg" alt="Click to translate this into Japanese.">
-  </a>
+  <img src="https://img.shields.io/badge/lang-JA-brightgreen.svg" alt="Click to translate this into Japanese.">
+  <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="This project is built with Gemini"/>
+  <img src="https://img.shields.io/badge/Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="This projec is AI Agent Hackathon with Google Cloud"/>
 </h1>
 
 Co Email is the email-review application that makes people more confident on their emails with considering about email context.
@@ -14,12 +14,15 @@ Co Email is the email-review application that makes people more confident on the
 
 **Test Account:** <br/>
 email: `testuserrukis@gmail.com`<br/>
-password: `TestRuki,1212`
+password: `TestRuki,1212`<br/>
 
-<div align="left">
-  <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="This project is built with Gemini"/>
-  <img src="https://img.shields.io/badge/For-Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="This projec is AI Agent Hackathon with Google Cloud"/>
-</div>
+## App Features
+
+1. Sync with your Gmail inbox.(only "personal" label for now)
+2. In "Inbox", Click one of the email to reply.
+3. After writing your email content, click "Review before send".
+4. Go to the "ReviewBox" and select the draft email content.
+5. You can see the review from the Vertex AI.
 
 ## Tech Stack
 
@@ -60,14 +63,6 @@ password: `TestRuki,1212`
 4. Run:
 
 `docker compose up`
-
-## App Features
-
-1. Sync with your Gmail inbox.(only "personal" label for now)
-2. In "Inbox", Click one of the email to reply.
-3. After writing your email content, click "Review before send".
-4. Go to the "ReviewBox" and select the draft email content.
-5. You can see the review from the Vertex AI.
 
 ---
 
