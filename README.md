@@ -13,7 +13,9 @@ Co Email は、メールの内容とその背景を考慮しながら、人々�
 
 <br/>
 
-**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （OAuth App Verification が完了次第、皆さんの Google アカウントでも、利用可能です。）
+## (重要) 一時的な試験運用期間について
+
+**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （OAuth App Verification が完了次第、皆さんの  Google  アカウントでも、利用可能です。）
 
 **Test Account:** <br/>
 email: `testuserrukis@gmail.com`<br/>

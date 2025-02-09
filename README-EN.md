@@ -12,13 +12,15 @@ Co Email is the email-review application that makes people more confident on the
 
 <br/>
 
+## (Important) Regarding the trial operation period
+
 **Note:** Currently, Co Email is going under the Google OAuth App Verification process. So, Co Email only works under the following test account for now. 😭 (After the verificaiton, we could expose this to the world! 🤩)
 
 **Test Account:** <br/>
 email: `testuserrukis@gmail.com`<br/>
 password: `TestRuki,1212`<br/>
 
-## App Features
+## Application Work Flow
 
 1. Sync with your Gmail inbox.(only "personal" label for now)
 2. In "Inbox", Click one of the email to reply.
@@ -36,15 +38,13 @@ password: `TestRuki,1212`<br/>
 - **AI Service**: Google Cloud Vertex API(Gemini)
 - **Infra**: Google Cloud Platform(Cloud Run, Artifact Registry, Cloud Build)
 
-![アーキテクチャ](./assets/diagram.png)
-
 ## Prerequisit
 
 - You need your Google Cloud Project set up.
 - You need your Google Oauth 2.0 set up.
 - You need your Goolge Vertex model set up.
 
-## Setup
+## Dev Environment Setup
 
 **Note**: Small note, please refer to this content, if you would like to connect your local docker container to your Vertext AI model. (https://medium.com/google-cloud/how-to-test-google-cloud-services-locally-in-docker-d74196147841)
 
