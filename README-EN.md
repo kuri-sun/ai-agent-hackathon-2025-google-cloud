@@ -1,7 +1,9 @@
 <h1>
   <span>Co Email<span>
   &nbsp;
-  <img src="https://img.shields.io/badge/lang-JA-brightgreen.svg" alt="Click to translate this into Japanese.">
+  <a href="README.md">
+    <img src="https://img.shields.io/badge/lang-日本語-brightgreen.svg" alt="Click to translate this into Japanese.">
+  </a>
   <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="This project is built with Gemini"/>
   <img src="https://img.shields.io/badge/Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="This projec is AI Agent Hackathon with Google Cloud"/>
 </h1>
@@ -26,7 +28,7 @@ password: `TestRuki,1212`<br/>
 4. Go to the "ReviewBox" and select the draft email content.
 5. You can see the review from the Vertex AI.
 
-## Tech Stack
+## Tech Stack + Architecture
 
 - **Language**: TypeScript
 - **Frontend**: ReactJS
@@ -36,7 +38,7 @@ password: `TestRuki,1212`<br/>
 - **AI Service**: Google Cloud Vertex API(Gemini)
 - **Infra**: Google Cloud Platform(Cloud Run, Artifact Registry, Cloud Build)
 
-## Prerequisite
+## Prerequisit
 
 - You need your Google Cloud Project set up.
 - You need your Google Oauth 2.0 set up.
@@ -68,9 +70,10 @@ password: `TestRuki,1212`<br/>
 
 ## References
 
-- The Event Detail: https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon 
-- Gmail API: https://developers.google.com/gmail/api/reference/rest/v1/users.threads/list?hl=ja 
-- VertexAI Node SDK: https://www.npmjs.com/package/@google-cloud/vertexai 
+- Project URL:
+- Zenn Article:
+
+<br />
 
 ---
 
