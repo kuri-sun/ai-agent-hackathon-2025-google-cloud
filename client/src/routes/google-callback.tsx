@@ -1,9 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React from "react";
 import { Axios } from "../axios";
+import { BeatLoader } from "../components/beat-loader";
+import { useTranslation } from "react-i18next";
 
 const GoogleCallbackPage = () => {
-  // Extract the "code" part
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -27,7 +29,7 @@ const GoogleCallbackPage = () => {
           return;
         }
       } catch (error) {
-        console.error(error);
+        console.error("Redirecting Failed: ", error);
         // navigate("/login");
       }
     };
@@ -38,7 +40,7 @@ const GoogleCallbackPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <div>Redirecting...</div>;
+  return <BeatLoader text={t("Redirecting...")} />;
 };
 
 export default GoogleCallbackPage;
