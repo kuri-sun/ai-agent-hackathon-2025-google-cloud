@@ -1,7 +1,9 @@
 <h1>
   <span>Co Email<span>
   &nbsp;
-  <img src="https://img.shields.io/badge/lang-JA-brightgreen.svg" alt="Click to translate this into Japanese.">
+  <a href="README.md">
+    <img src="https://img.shields.io/badge/lang-日本語-brightgreen.svg" alt="Click to translate this into Japanese.">
+  </a>
   <img src="https://img.shields.io/badge/Powered_with-Gemini-5698EE?logoColor=white" alt="This project is built with Gemini"/>
   <img src="https://img.shields.io/badge/Google_Cloud_AI_Hackathon_2025-5698EE?logoColor=white" alt="This projec is AI Agent Hackathon with Google Cloud"/>
 </h1>
@@ -24,7 +26,7 @@ password: `TestRuki,1212`<br/>
 4. Go to the "ReviewBox" and select the draft email content.
 5. You can see the review from the Vertex AI.
 
-## Tech Stack
+## Tech Stack + Architecture
 
 - **Language**: TypeScript
 - **Frontend**: ReactJS
@@ -33,6 +35,8 @@ password: `TestRuki,1212`<br/>
 - **Email Service**: Gmail API
 - **AI Service**: Google Cloud Vertex API(Gemini)
 - **Infra**: Google Cloud Platform(Cloud Run, Artifact Registry, Cloud Build)
+
+![アーキテクチャ](./assets/diagram.png)
 
 ## Prerequisit
 
@@ -63,6 +67,13 @@ password: `TestRuki,1212`<br/>
 4. Run:
 
 `docker compose up`
+
+## References
+
+- Project URL:
+- Zenn Article:
+
+<br />
 
 ---
 

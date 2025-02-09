@@ -13,7 +13,7 @@ Co Email は、メールの内容とその背景を考慮しながら、人々�
 
 <br/>
 
-**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （OAuth App Verificationが完了次第、皆さんのGoogleアカウントでも、利用可能です。）
+**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （OAuth App Verification が完了次第、皆さんの Google アカウントでも、利用可能です。）
 
 **Test Account:** <br/>
 email: `testuserrukis@gmail.com`<br/>
@@ -27,7 +27,7 @@ password: `TestRuki,1212`<br/>
 4. 「レビューボックス」に移動し、下書きメールの内容を選択します。
 5. Vertex AI からのレビュー結果を確認できます。
 
-## 使用技術
+## 使用技術とアーキテクチャ
 
 - **言語**: TypeScript
 - **フロントエンド**: ReactJS
@@ -37,13 +37,15 @@ password: `TestRuki,1212`<br/>
 - **AI サービス**: Google Cloud Vertex API(Gemini)
 - **インフラ**: Google Cloud Platform(Cloud Run, Artifact Registry, Cloud Build)
 
+![アーキテクチャ](./assets/diagram.png)
+
 ## 前提条件
 
 - Google Cloud プロジェクトが設定されていること。
 - Google OAuth 2.0 が設定されていること。
 - Google Vertex AI モデルが設定されていること。
 
-## セットアップ
+## 構築方法
 
 **注**: ローカルの Docker コンテナを Vertex AI モデルに接続する方法については、以下の記事を参考にしてください。 ([https://medium.com/google-cloud/how-to-test-google-cloud-services-locally-in-docker-d74196147841](https://medium.com/google-cloud/how-to-test-google-cloud-services-locally-in-docker-d74196147841))
 
@@ -76,6 +78,13 @@ cp .env.example .env
 ```sh
 docker compose up
 ```
+
+## 参考
+
+- プロジェクトURL:
+- Zenn の記事:
+
+<br />
 
 ---
 
