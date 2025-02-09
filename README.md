@@ -13,7 +13,7 @@ Co Email は、メールの内容とその背景を考慮しながら、人々�
 
 <br/>
 
-**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （確認が完了次第、皆さんの Google アカウントでも、利用可能です！🤩）
+**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （OAuth App Verificationが完了次第、皆さんのGoogleアカウントでも、利用可能です。）
 
 **Test Account:** <br/>
 email: `testuserrukis@gmail.com`<br/>
@@ -27,7 +27,7 @@ password: `TestRuki,1212`<br/>
 4. 「レビューボックス」に移動し、下書きメールの内容を選択します。
 5. Vertex AI からのレビュー結果を確認できます。
 
-## 技術スタック
+## 使用技術
 
 - **言語**: TypeScript
 - **フロントエンド**: ReactJS
