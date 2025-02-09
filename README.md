@@ -13,7 +13,9 @@ Co Email は、メールの内容とその背景を考慮しながら、人々�
 
 <br/>
 
-**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （OAuth App Verificationが完了次第、皆さんのGoogleアカウントでも、利用可能です。）
+## (重要) 一時的な試験運用期間について
+
+**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （OAuth App Verification が完了次第、皆さんの Google アカウントでも、利用可能です。）
 
 **Test Account:** <br/>
 email: `testuserrukis@gmail.com`<br/>
@@ -43,7 +45,7 @@ password: `TestRuki,1212`<br/>
 - Google OAuth 2.0 が設定されていること。
 - Google Vertex AI モデルが設定されていること。
 
-## セットアップ
+## 開発をする
 
 **注**: ローカルの Docker コンテナを Vertex AI モデルに接続する方法については、以下の記事を参考にしてください。 ([https://medium.com/google-cloud/how-to-test-google-cloud-services-locally-in-docker-d74196147841](https://medium.com/google-cloud/how-to-test-google-cloud-services-locally-in-docker-d74196147841))
 
@@ -76,6 +78,12 @@ cp .env.example .env
 ```sh
 docker compose up
 ```
+
+## 参考資料
+
+- The Event Detail: https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon
+- Gmail API: https://developers.google.com/gmail/api/reference/rest/v1/users.threads/list?hl=ja
+- VertexAI Node SDK: https://www.npmjs.com/package/@google-cloud/vertexai
 
 ---
 
