@@ -28,13 +28,15 @@ const GoogleCallbackPage = () => {
         }
       } catch (error) {
         console.error(error);
-        navigate("/login");
+        // navigate("/login");
       }
     };
 
-    if (code) redirect();
+    if (code) {
+      redirect();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code]);
+  }, []);
 
   return <div>Redirecting...</div>;
 };

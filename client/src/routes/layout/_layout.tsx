@@ -5,6 +5,7 @@ import { AiOutlineInbox } from "react-icons/ai";
 import { useAuth } from "../../context/auth-provider";
 import { BiMessageDots } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
+import { BeatLoader } from "../../components/beat-loader";
 
 const Layout = () => {
   const { t } = useTranslation();
@@ -43,18 +44,13 @@ const Layout = () => {
     // },
   ];
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <main className="text-gray-600 dark:text-neutral-100">
       {/* Header */}
       <Header />
-      {/* SideBar */}
       <div className="h-[calc(100vh-52px)] mt-[52px]">
         <div className="flex flex-row dark:bg-black/80 ">
-          {/* Email Drawer View */}
+          {/* SideBar */}
           <nav className="fixed flex flex-col w-1/6">
             <div className="flex flex-col h-[calc(100vh-52px)] border-r">
               {tabs.map((tab) => (
@@ -78,7 +74,8 @@ const Layout = () => {
               ))}
             </div>
           </nav>
-          <Outlet />
+
+          {loading ? <BeatLoader text={t("Processing...")} /> : <Outlet />}
         </div>
       </div>
     </main>
