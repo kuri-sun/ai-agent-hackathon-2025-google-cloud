@@ -29,8 +29,8 @@ export default function EmailCard({
       {/* Subject */}
       <h3 className="text-sm text-start font-semibold mt-2">{subject}</h3>
       {/* Body */}
-      <p className="text-xs text-start text-neutral-500 dark:text-neutral-200 mt-1 line-clamp-5">
-        {text}
+      <p className="text-xs text-start text-neutral-500 dark:text-neutral-200 mt-1 line-clamp-3">
+        {text}...
       </p>
     </>
   );

@@ -5,7 +5,7 @@ import IndexPage from "./routes/_index";
 import Layout from "./routes/layout/_layout";
 import LoginPage from "./routes/login";
 import GoogleCallbackPage from "./routes/google-callback";
-import EmailDetailPage from "./routes/email-detail";
+import ThreadDetailPage from "./routes/thread-detail";
 import ReviewsPage from "./routes/reviews";
 import ReviewDetailPage from "./routes/review-detail";
 import AuthProvider from "./context/auth-provider";
@@ -36,7 +36,7 @@ function App() {
             <Route path="/google/callback" element={<GoogleCallbackPage />} />
             <Route path="/" element={<Layout />}>
               <Route index element={<IndexPage />} />
-              <Route path="/inbox/:emailId" element={<EmailDetailPage />} />
+              <Route path="/inbox/:threadId" element={<ThreadDetailPage />} />
               <Route path="/reviews" element={<ReviewsPage />} />
               <Route path="/reviews/:draftId" element={<ReviewDetailPage />} />
               {/* <Route path="/reviews/:reviewId" element={<ReviewDetailPage />} /> */}

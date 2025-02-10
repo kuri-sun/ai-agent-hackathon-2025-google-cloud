@@ -1,9 +1,16 @@
 import { ReviewResult } from "./review-result";
 
+export type Thread = {
+  id: string;
+  historyId: string;
+  messages: Email[];
+};
+
 export type Email = {
   id: string;
   threadId: string;
   labelIds: string[];
+  snippet: string;
   sizeEstimate: number;
   historyId: string;
   internalDate: string;

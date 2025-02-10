@@ -7,13 +7,8 @@ import Dropdown from "./dropdown";
 import { setUILanguage } from "../utils/i18n";
 import { BsFillLightbulbFill } from "react-icons/bs";
 
-function Header({
-  isAuth = true,
-  className = "",
-}: {
-  isAuth?: boolean;
-  className?: string;
-}) {
+function Header({ className = "" }: { className?: string }) {
+  const defaultLang = localStorage.getItem("lang") ?? "ja";
   const { user, logOut } = useAuth();
 
   const onToggleLanguageClick = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -76,7 +71,7 @@ function Header({
             className="p-2 rounded-lg border bg-white dark:bg-neutral-800 cursor-pointer"
             name="language select"
             onChange={onToggleLanguageClick}
-            defaultValue={document.documentElement.lang}
+            defaultValue={defaultLang}
           >
             <option value="ja">日本語</option>
             <option value="en">English</option>
