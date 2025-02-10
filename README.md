@@ -11,11 +11,13 @@
 Co Email は、メールの内容とその背景を考慮しながら、人々が、より自信を持って、メール送信できるようにするメールレビューツールです。カジュアルな場面から、プロフェッショナルな場面にて応用可能です。<br/>
 また、レビューをする前に自身でチェック可能で、そのまま送信してしまう心配もありません。
 
-<br/>
+[![YoutubeのCo Mail動画](./assets/app-home.png)](https://www.youtube.com/watch?v=UDCn1hrPocs)
+
+[このプロジェクトに関する Zenn の記事](https://zenn.dev/ruki_kuri_sun/articles/e312d3b58394c2)
 
 ## (重要) 一時的な試験運用期間について
 
-**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （OAuth App Verification が完了次第、皆さんの  Google  アカウントでも、利用可能です。）
+**注**: 現在、Co Email は、Google による、OAuth App Verification のプロセスを進めています。そのため、現時点では以下のテストアカウントでのみ動作します。😭 （OAuth App Verification が完了次第、皆さんの Google アカウントでも、利用可能です。）
 
 **Test Account:** <br/>
 email: `testuserrukis@gmail.com`<br/>
@@ -83,10 +85,8 @@ docker compose up
 
 ## 参考
 
-- プロジェクトURL:
-- Zenn の記事:
-
-<br />
+- プロジェクト URL: https://google-cloud-hackathonn-2025-api-979623204810.us-central1.run.app/
+- Zenn の記事: https://zenn.dev/ruki_kuri_sun/articles/e312d3b58394c2
 
 ---
 

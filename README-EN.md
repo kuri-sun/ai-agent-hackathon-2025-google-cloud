@@ -10,11 +10,13 @@
 
 Co Email is the email-review application that makes people more confident on their emails with considering about email context.
 
-<br/>
+[![Youtube video about Co Mail](./assets/app-home.png)](https://www.youtube.com/watch?v=UDCn1hrPocs)
+
+[Zenn article about this project](https://zenn.dev/ruki_kuri_sun/articles/e312d3b58394c2)
 
 ## (Important) Regarding the trial operation period
 
-**Note:** Currently, Co Email is going under the Google OAuth App Verification process. So, Co Email only works under the following test account for now. 😭 (After the verificaiton, we could expose this to the world! 🤩)
+**Note:** Currently, Co Email is going under the Google OAuth App Verification process. So, Co Email only works under the following test account for now. 😭 (After the verificaiton, we could expose this to the world!)
 
 **Test Account:** <br/>
 email: `testuserrukis@gmail.com`<br/>
@@ -70,10 +72,8 @@ password: `TestRuki,1212`<br/>
 
 ## References
 
-- Project URL:
-- Zenn Article:
-
-<br />
+- Project URL: https://google-cloud-hackathonn-2025-api-979623204810.us-central1.run.app/
+- Zenn article: https://zenn.dev/ruki_kuri_sun/articles/e312d3b58394c2
 
 ---
 
