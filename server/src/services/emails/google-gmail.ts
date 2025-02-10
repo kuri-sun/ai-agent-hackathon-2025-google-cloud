@@ -491,13 +491,12 @@ export const getThreads = async (
     expiryDate: number;
   },
   q: string = "",
-  maxResults: number = 10,
-  pageToken: string | undefined = undefined
+  maxResults: number,
+  pageToken: string
 ) => {
   const gmail = setupGmailClient({ ...auth });
 
   try {
-    // Call Gmail API to get emails
     const listResponse = await gmail.users.threads.list({
       userId: "me",
       labelIds: ["INBOX", "CATEGORY_PERSONAL"],
@@ -509,13 +508,26 @@ export const getThreads = async (
     const threads = listResponse.data.threads || [];
     const nextPageToken = listResponse.data.nextPageToken;
 
-    // Call Gmail API to get one email
     const threadData = await Promise.all(
       threads.map(async (thread) => {
         const threadResponse = await gmail.users.threads.get({
           userId: "me",
           id: thread.id as string,
         });
+
+        if (threadResponse.data.messages) {
+          const messageResponse = await gmail.users.messages.get({
+            userId: "me",
+            id: threadResponse.data.messages[0].id as string,
+            format: "raw",
+          });
+
+          const parsed = await parseRawEmail(messageResponse.data.raw);
+          const merged = { ...threadResponse.data.messages[0], ...parsed };
+          delete merged.raw;
+
+          threadResponse.data.messages[0] = merged;
+        }
 
         return threadResponse.data;
       })
@@ -567,7 +579,7 @@ export const getThread = async (
       }) || []
     );
 
-    return threadWithMessages;
+    return { ...threadData.data, messages: threadWithMessages };
   } catch (error) {
     throw new Error(
       "Error getting from Gmail API: " + (error as Error).message

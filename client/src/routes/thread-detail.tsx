@@ -1,5 +1,5 @@
 import React from "react";
-import { Email, EmailPayload } from "../models/email";
+import { Email, EmailPayload, Thread } from "../models/email";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import EmailForm from "../components/email-form";
@@ -9,39 +9,44 @@ import EmailDetailCardSkelton from "../components/email-detail-card-skelton";
 import { BeatLoader } from "../components/beat-loader";
 import { useTranslation } from "react-i18next";
 
-export default function EmailDetailPage() {
+export default function ThreadDetailPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { emailId } = useParams();
+  const { threadId } = useParams();
 
   const emailViewRef = React.useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [processingEmail, setProcessingEmail] = React.useState<boolean>(false);
-  const [selectedEmail, setSelectedEmail] = React.useState<Email | null>(null);
+  const [selectedThread, setSelectedThread] = React.useState<Thread | null>(
+    null
+  );
   const [replyEmailForm, setReplyEmailForm] =
     React.useState<EmailPayload | null>(null);
 
   React.useEffect(() => {
-    const fetchEmail = async () => {
+    const fetchThread = async () => {
       try {
         setLoading(true);
-        const res = await Axios.get<ApiResponse<Email>>(`/emails/${emailId}`);
-        const email = res.data.data;
-        setSelectedEmail(email);
+        const threadRes = await Axios.get<ApiResponse<Thread>>(
+          `/emails/threads/${threadId}`
+        );
+        const thread = threadRes.data.data;
+        setSelectedThread(thread);
+        const latestReply = thread.messages[0];
 
         // set the form data
-        const updatedReferences = email?.references
-          ? [...email?.references, email?.messageId]
-          : [email?.messageId || ""];
+        const updatedReferences = latestReply?.references
+          ? [...latestReply?.references, latestReply?.messageId]
+          : [latestReply?.messageId || ""];
         setReplyEmailForm({
-          from: email?.to.text || "", // to is from the selected email
-          to: email?.from.text || "", // from is from the selected email
-          subject: `Re: ${email?.subject}`,
+          from: latestReply?.to.text || "", // to is from the selected email
+          to: latestReply?.from.text || "", // from is from the selected email
+          subject: `Re: ${latestReply?.subject}`,
           text: "",
-          inReplyTo: email?.messageId || "",
+          inReplyTo: latestReply?.messageId || "",
           references: updatedReferences,
-          threadId: email?.threadId || "",
+          threadId: latestReply?.threadId || "",
         });
       } catch (err) {
         console.error(err);
@@ -50,9 +55,7 @@ export default function EmailDetailPage() {
       }
     };
 
-    if (emailId) {
-      fetchEmail();
-    }
+    if (threadId) fetchThread();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -153,12 +156,13 @@ export default function EmailDetailPage() {
           >
             {!loading ? (
               <>
-                {selectedEmail && (
-                  <EmailDetailCard
-                    email={selectedEmail}
-                    onClickReply={onClickReply}
-                  />
-                )}
+                {/* Thread of emails */}
+                {selectedThread
+                  ? selectedThread.messages.map((email) => (
+                      <EmailDetailCard key={email.id} email={email} />
+                    ))
+                  : null}
+                {/* Reply Form */}
                 {replyEmailForm && (
                   <EmailForm
                     replyEmailForm={replyEmailForm}

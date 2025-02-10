@@ -238,13 +238,23 @@ export const getEmailThreads = async (req: Request, res: Response) => {
   try {
     const { clientId, accessToken, refreshToken, expiryDate } =
       extractAuthInfo(req);
+    const { page, max, q } = req.query as {
+      page: string;
+      max: string;
+      q: string;
+    };
 
-    const data = await getThreads({
-      clientId,
-      accessToken,
-      refreshToken,
-      expiryDate,
-    });
+    const data = await getThreads(
+      {
+        clientId,
+        accessToken,
+        refreshToken,
+        expiryDate,
+      },
+      q,
+      max ? Number(max) : 10,
+      page
+    );
 
     res.status(200).json({ success: true, data });
   } catch (error) {

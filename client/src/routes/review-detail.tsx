@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { DraftEmail, DraftPayload, Email } from "../models/email";
+import { DraftEmail, DraftPayload, Email, Thread } from "../models/email";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { BiMessageDots } from "react-icons/bi";
@@ -9,7 +9,6 @@ import EmailDetailCard from "../components/email-detail-card";
 import { Axios } from "../axios";
 import EmailDetailCardSkelton from "../components/email-detail-card-skelton";
 import { BeatLoader } from "../components/beat-loader";
-import { delay } from "../utils/format";
 import { useTranslation } from "react-i18next";
 
 export default function ReviewDetailPage() {
@@ -42,10 +41,10 @@ export default function ReviewDetailPage() {
         // Fetch the thread emails
         let onlyEmails: Email[] = [];
         if (draftRes.data.data.threadId) {
-          const threadEmailsRes = await Axios.get<ApiResponse<Email[]>>(
+          const threadRes = await Axios.get<ApiResponse<Thread>>(
             `/emails/threads/${draftRes.data.data.threadId}`
           );
-          const emails = threadEmailsRes.data.data;
+          const emails = threadRes.data.data.messages;
           onlyEmails = emails.filter(
             (email) => email.labelIds.includes("DRAFT") === false
           );
@@ -182,15 +181,15 @@ export default function ReviewDetailPage() {
       }
 
       setProcessingReview(true);
-      await Axios.post<ApiResponse<{ id: string; message: any }>>(
+      const res = await Axios.post<ApiResponse<{ id: string; message: any }>>(
         `/emails/drafts/${draftId}/send`,
         {
           threadId: selectedDraft?.threadId,
         }
       );
-
       setProcessingReview(false);
-      navigate("/");
+
+      navigate(`/reviews/${res.data.data.id}`);
     } catch (err) {
       console.error(err);
     }
@@ -225,7 +224,7 @@ export default function ReviewDetailPage() {
           >
             {!loading ? (
               <>
-                {/* Thread of emails? */}
+                {/* Thread of emails */}
                 {threadEmails.map((email) => (
                   <EmailDetailCard key={email.id} email={email} />
                 ))}

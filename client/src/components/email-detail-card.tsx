@@ -46,7 +46,9 @@ export default function EmailDetailCard({
         )}
       </div>
 
-      <div dangerouslySetInnerHTML={{ __html: email.html }}></div>
+      <div
+        dangerouslySetInnerHTML={{ __html: email.html || email.textAsHtml }}
+      ></div>
     </div>
   );
 }
