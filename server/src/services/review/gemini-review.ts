@@ -45,7 +45,7 @@ export const generateEmailReviewResultFromGemini = async (
         6. メールのフォーマットが適切かどうか
         7. メールの文法が正しいかどうか
 
-        以下のメール内容を確認し, どの部分を、どのように直せばいいのかを、具体的な直すべきポイントを挙げ、レビューをお願いします。一つ一つのレビューのコメントは200~400文字ほどでお願いします。レビューの出力は\`{ "reviews": [ { level: "danger" | "warning" | "info"; confidence: number;  comment: string; }, ... ] }\`のJSON Object形式で、そのままJSON.stringfyを適応できるような形でお願いします。:
+        以下のメール内容を確認し, どの部分を、どのように直せばいいのかを、具体的な直すべきポイントを挙げ、レビューをお願いします。一つ一つのレビューのコメントは400文字程度でお願いします。レビューの出力は\`{ "reviews": [ { level: "danger" | "warning" | "info"; confidence: number;  comment: string; }, ... ] }\`のJSON Object形式で、そのままJSON.stringfyを適応できるような形でお願いします。:
         ${emailContent}
       `;
 
