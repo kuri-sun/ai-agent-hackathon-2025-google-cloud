@@ -7,7 +7,7 @@ import {
   GeminiReviewOutput,
   generateEmailReviewResultFromGemini,
 } from "../review/gemini-review";
-import { Review, ReviewResult } from "../../models/review";
+import { ReviewResult } from "../../models/review";
 
 type EmailOptions = {
   threadId?: string;
@@ -52,8 +52,8 @@ export const getMessages = async (
     expiryDate: number;
   },
   q: string = "",
-  maxResults: number = 10,
-  pageToken: string | undefined = undefined
+  maxResults: number,
+  pageToken: string
 ) => {
   const gmail = setupGmailClient({ ...auth });
 
@@ -90,7 +90,6 @@ export const getMessages = async (
         const parsed = await parseRawEmail(message.raw);
         const merged = { ...message, ...parsed };
         delete merged.raw;
-        delete merged.snippet;
         delete merged.payload;
         return merged;
       })

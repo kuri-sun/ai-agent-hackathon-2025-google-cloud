@@ -50,7 +50,9 @@ export default function EmailDetailPage() {
       }
     };
 
-    if (emailId) fetchEmail();
+    if (emailId) {
+      fetchEmail();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

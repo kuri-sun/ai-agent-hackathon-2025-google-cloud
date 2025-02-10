@@ -6,30 +6,46 @@ import EmailCard from "../components/email-card";
 import { twMerge } from "tailwind-merge";
 import { BiRevision } from "react-icons/bi";
 import { Axios } from "../axios";
+import Pagination from "../components/pagination";
 
 export default function IndexPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [emails, setEmails] = React.useState<Email[]>([]);
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [pageMap, setPageMap] = React.useState<
+    Record<number, string | undefined | null>
+  >({
+    1: null,
+  });
 
-  const refreshEmails = async () => {
+  const refreshEmails = async (page: number = 1) => {
     try {
       setLoading(true);
+
+      const pageToken = pageMap[page];
       const res = await Axios.get<
         ApiResponse<{
           messages: Email[];
+          nextPageToken: string;
         }>
-      >("/emails", {
+      >(pageToken ? `/emails?page=${pageToken}` : "/emails", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "x-refresh-token": localStorage.getItem("refreshToken"),
         },
       });
       setEmails(res.data.data.messages);
+      setPageMap({ ...pageMap, [page + 1]: res.data.data.nextPageToken });
       setLoading(false);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const onPageChange = async (page: number) => {
+    await refreshEmails(page);
+    setCurrentPage(page);
   };
 
   const onSelectEmail = (email: Email) => {
@@ -45,13 +61,18 @@ export default function IndexPage() {
   return (
     <div className="flex flex-col w-5/6 ml-auto">
       {/* Header */}
-      <div className="fixed h-[40px] w-full flex flex-row items-center justify-start px-4 border-b">
+      <div className="fixed h-[40px] w-5/6 flex flex-row items-center justify-between px-4 border-b">
         <button
           className="hover:bg-gray-100 dark:hover:bg-black/60 p-2 rounded-lg"
-          onClick={refreshEmails}
+          onClick={() => refreshEmails(currentPage)}
         >
           <BiRevision size={20} />
         </button>
+        <Pagination
+          currentPage={currentPage}
+          isNextDisabled={!pageMap[currentPage + 1]}
+          onPageChange={onPageChange}
+        />
       </div>
       {loading ? (
         <EmailListSkelton />
