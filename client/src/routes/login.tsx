@@ -50,9 +50,9 @@ const LoginPage = () => {
         <div />
         <div className="flex flex-row items-center justify-center gap-14">
           {/* image */}
-          <img src={loginImage} alt="" className="w-2/4" />
+          <img src={loginImage} alt="" className="w-2/5" />
           {/* Login */}
-          <div className="w-1/4 flex flex-col items-start gap-6">
+          <div className="w-1/5 flex flex-col items-start gap-6">
             <div className="flex flex-col items-start gap-8">
               <h1 className="text-6xl text-neutral-700 dark:text-neutral-100 font-bold">
                 Co-Email
